@@ -11,5 +11,6 @@ Il a pour objectif de trouver dans les read un codon start a partir du quel il e
 - ouvertures des fichiers fasta :
 #### parserMultiFASTA : 
 cette fonction permet d'ouvrir le fichier fasta et de recuperer un dictionnaire nommé "matrice" de la forme suivante 
-| ID | sequence|
-|read+n°|ACTG...|
+ID | sequence|
+-  | -:
+read+n°|ACTG...|
