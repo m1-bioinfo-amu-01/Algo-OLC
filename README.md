@@ -26,7 +26,7 @@ Il a pour objectif de trouver dans les read un codon start a partir du quel il e
    lis le fichier et stock la séquence du codon start dans la variable start et la séquence de stop dans la variable stop. 
 
 
-TODO remplissage de seed dans une fonction ( parcours de la matrice et repertorie les n premier nt + id read associe dans seed & ajout de l'element position dans matrice)
+TODO fonction pour le remplissage de seed ( pour l'instant boucle qui parcours la matrice et repertorie les n premier nt + id read associe dans seed & ajout de l'element position dans matrice)
 
 #### try_stop(file path):
 not used yet
