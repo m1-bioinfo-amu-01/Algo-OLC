@@ -13,8 +13,12 @@ Il a pour objectif de trouver dans les read un codon start a partir du quel il e
   #### parserMultiFASTA : 
   cette fonction permet d'ouvrir le fichier fasta et de recuperer un dictionnaire nommé "matrice" de la forme suivante 
    | ID read (read+n°)| liste de 1 ou 2 element : sequence et eventuellement position du start |
-   ex 
+   
+   ex :
+   
    |read3 | [ ATTGG... ] |  --> ici read sans codon start dedans
+   
+   
    |read4 | [ CGTCA... , 90]| --> ici read avec un codon start commencant au 90 eme nucléotide
    
 
