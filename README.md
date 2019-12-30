@@ -12,29 +12,44 @@ Il a pour objectif de trouver dans les read un codon start a partir du quel il e
 - fonctions:
   #### parserMultiFASTA : 
   cette fonction permet d'ouvrir le fichier fasta et de recuperer un dictionnaire nommé "matrice" de la forme suivante 
-   IMAGE 
+   | ID read (read+n°)| liste de 1 ou 2 element : sequence et eventuellement position du start |
+   ex 
+   |read3 | [ ATTGG... ] |  --> ici read sans codon start dedans
+   |read4 | [ CGTCA... , 90]| --> ici read avec un codon start commencant au 90 eme nucléotide
+   
 
    #### parser_start_stop
    lis le fichier et stock la séquence du codon start dans la variable start et la séquence de stop dans la variable stop. 
 
 
-TODO remplissage de seed dans une fonction ( parcours de la matrice et repertorie les n premier nt + id read associe)
+TODO remplissage de seed dans une fonction ( parcours de la matrice et repertorie les n premier nt + id read associe dans seed & ajout de l'element position dans matrice)
 
 #### try_stop(file path):
 not used yet
 
 #### extend(read,seed,matrice,kmer,stop,result):
-  boucle for qui parcours chaque nucléotide:(pour decaler de 1 le kmer a tester)
-    verifie si les kmer test n'est pas un codon stop : 
+  boucle for qui parcours chaque nucléotide:(pour decaler de 1 le kmer a tester):
+   
+   verifie si les kmer test n'est pas un codon stop : 
+      
       si oui : 
+      
       return resulat 
+      
       sinon : 
+      
       regarde si le test dans le tableau seed(liste des 1 kmer):
+        
         test que ce n'est pas deja lui meme :
+          
           test si le reste de la partie chevauchante et aussi egale: 
+            
             si oui on enleve cette reference de seed pour eviter une boucle infinie 
+            
             test le read permet bien d'etendre la séquence: 
+              
               ajout de la partie non chevauchante dans la séquence etendue 
+              
               recursion 
         
 -  variables : 
