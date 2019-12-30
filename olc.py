@@ -61,30 +61,6 @@ def parser_start_stop(nom_fichier):
 
 	return start, stop
 
-
-'''chargement des données '''
-matrice = parserMultiFASTA('/Users/anissachibani/Desktop/M2/ALG/Projet/data/ecoli_2kb_perfect_forward_reads.fasta')
-
-start, stop = parser_start_stop('/Users/anissachibani/Desktop/M2/ALG/Projet/data/start_stop_2kb.fa')
-
-'''def des variables'''
-kmer=len(start) # taille de notre kmer
-
-seed={} # matrice contant le 1kmer de tout les read de la forme {seq: id reads qui commencent par ca}
-
-for read in matrice: # remplissage de seed
-	first_kmer= matrice[read][0][0:kmer]
-	if first_kmer not in seed and first_kmer!= '':
-		seed[first_kmer]=[read]
-	else:
-		if first_kmer != '':
-			seed[first_kmer].append(read)
-	try:
-		pos = matrice[read][0].find(start) # en meme temps test dans chaque read si il y a un start et si ou l'indice de sa position est contenu dans pos
-	except IndexError :
-		pos=-1
-	if pos != -1:
-		matrice[read].append(pos) #si il y en a un matrice prend la forme {id read : [sequence , position start]}
 ''' fonction  qui permet de determinier si il y a un codon stop dans le read d'interet'''
 # actuellement on ne l'utilise pas encore
 def try_stop(matrice,read,stop):
@@ -93,8 +69,6 @@ def try_stop(matrice,read,stop):
 	except IndexError :
 		pos = -1 
 	return pos
-
-result = {'path': [], 'seq': ''} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
 
 ''' fonction recursive qui permet d'etendre la sequence du read initial
     - si le read contient un codon stop return le dictionnaire resultat
@@ -124,6 +98,36 @@ def extend(read,seed,matrice,kmer,stop,result):
 						result['seq']+=(matrice[essai][0][len(matrice[read][0][NT:]):]) # extention dxe la séquence
 						print("seq :",len(result['seq']) ) # print la longueur de la séquence pour pouvoir suivre son extension
 						extend(essai,seed,matrice,kmer,stop,result) # recursion
+
+
+'''chargement des données '''
+matrice = parserMultiFASTA('/Users/anissachibani/Desktop/M2/ALG/Projet/data/ecoli_2kb_perfect_forward_reads.fasta')
+
+start, stop = parser_start_stop('/Users/anissachibani/Desktop/M2/ALG/Projet/data/start_stop_2kb.fa')
+
+'''def des variables'''
+kmer=len(start) # taille de notre kmer
+
+seed={} # matrice contant le 1kmer de tout les read de la forme {seq: id reads qui commencent par ca}
+
+for read in matrice: # remplissage de seed
+	first_kmer= matrice[read][0][0:kmer]
+	if first_kmer not in seed and first_kmer!= '':
+		seed[first_kmer]=[read]
+	else:
+		if first_kmer != '':
+			seed[first_kmer].append(read)
+	try:
+		pos = matrice[read][0].find(start) # en meme temps test dans chaque read si il y a un start et si ou l'indice de sa position est contenu dans pos
+	except IndexError :
+		pos=-1
+	if pos != -1:
+		matrice[read].append(pos) #si il y en a un matrice prend la forme {id read : [sequence , position start]}
+
+
+result = {'path': [], 'seq': ''} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
+
+
 
 '''code principal : appel des fonction '''
 for i in matrice:
