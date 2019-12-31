@@ -1,60 +1,66 @@
 # Algo-OLC
 ## Bienvenue dans le read-me developpeur 
 
-## Fichier OLC.py 
-Ce programme necessite 2 fichier fasta en entrée 1 contenant les read que l'on souhaite etendre et un fichier contenant les condon START et STOP. 
+Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads que l'on souhaite étendre et un fichier contenant les codons START et STOP. 
 
-Il a pour objectif de trouver dans les read un codon start a partir du quel il essaye d'entendre une sequence nucleotidique. Pour cela il concatene les read chevauchants de facon exacte et ce tant qu'il ne rencontre pas de codon STOP. 
+Il a pour objectif de trouver dans les reads un codon start à partir duquel il essaye d'étendre une séquence nucléotidique. Pour cela il concatène les reads chevauchants de façon exacte et ce, jusqu'à ce qu'il retourne un codon STOP. 
 
 ### Structure principale 
-- import des modules necessaires 
+
+- import des modules nécessaires 
 
 - fonctions:
+
   #### parserMultiFASTA : 
-  cette fonction permet d'ouvrir le fichier fasta et de recuperer un dictionnaire nommé "matrice" de la forme suivante 
-   | ID read (read+n°)| liste de 1 ou 2 element : sequence et eventuellement position du start |
+
+  cette fonction permet d'ouvrir le fichier FASTA et de récupérer un dictionnaire nommé "matrice" de la forme suivante 
+   | ID read (read+n°)| liste de 1 ou 2 éléments : séquence et éventuellement position du start |
    
    ex :
    
    |read3 | [ ATTGG... ] |  --> ici read sans codon start dedans
    
    
-   |read4 | [ CGTCA... , 90]| --> ici read avec un codon start commencant au 90 eme nucléotide
+   |read4 | [ CGTCA... , 90]| --> ici read avec un codon start commençant au 90 ème nucléotide
    
 
    #### parser_start_stop
+
    lis le fichier et stock la séquence du codon start dans la variable start et la séquence de stop dans la variable stop. 
 
 
-TODO fonction pour le remplissage de seed ( pour l'instant boucle qui parcours la matrice et repertorie les n premier nt + id read associe dans seed & ajout de l'element position dans matrice)
+TODO fonction pour le remplissage de seed ( pour l'instant boucle qui parcours la matrice et répertorie les n premier nt + id read associe dans seed & ajout de l'élément position dans matrice). Seed permet de récupérer tous les reads qui partagent le premier kmer. 
 
 #### try_stop(file path):
 not used yet
 
 #### extend(read,seed,matrice,kmer,stop,result):
-  boucle for qui parcours chaque nucléotide:(pour decaler de 1 le kmer a tester):
+
+  boucle for qui parcours chaque nucléotide:(pour décaler de 1 le kmer a tester):
    
    verifie si les kmer test n'est pas un codon stop : 
       
       si oui : 
       
-      return resulat 
+      	return resulat 
       
       sinon : 
       
-      regarde si le test dans le tableau seed(liste des 1 kmer):
+      	regarde si le test dans le tableau seed(liste des 1 kmer):
         
-        test que ce n'est pas deja lui meme :
+        	test que ce n'est pas déjà lui même :
           
-          test si le reste de la partie chevauchante et aussi egale: 
+         		 test si le reste de la partie chevauchante et aussi égale: 
             
-            si oui on enleve cette reference de seed pour eviter une boucle infinie 
+            			si oui on enlève cette référence de seed pour éviter une boucle infinie 
             
-            test le read permet bien d'etendre la séquence: 
+            			test le read permet bien d'etendre la séquence: 
               
-              ajout de la partie non chevauchante dans la séquence etendue 
+             				ajout de la partie non chevauchante dans la séquence etendue 
               
-              recursion 
+              				recursion 
+
+
         
 -  variables : 
 
@@ -71,5 +77,8 @@ seed : tableau contenant tout les read qui partagent le meme premier kmer
 
 result : tableau contenant le chemin (liste des read utilises pour etendre le read de depart )et la séquence concatenee obtenue apres extention
 
+test = read dans matrice que l'on veut tester 
+
+essai = read dans seed[test] quand le read test est présent dans seed
 
  
