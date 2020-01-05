@@ -16,14 +16,14 @@ Il a pour objectif de trouver dans les read un codon start a partir du quel il e
    
    ex :
    
-   |read3 | [ ATTGG... ] |  --> ici read sans codon start dedans
+   |read3 | [ ATTGG... ] |  --> ici read sans kmer start dedans
    
    
-   |read4 | [ CGTCA... , 90]| --> ici read avec un codon start commencant au 90 eme nucléotide
+   |read4 | [ CGTCA... , 90]| --> ici read avec un kmer start commencant au 90 eme nucléotide
    
 
    #### parser_start_stop
-   lis le fichier et stock la séquence du codon start dans la variable start et la séquence de stop dans la variable stop. 
+   lis le fichier et stock la séquence du kmer start dans la variable start et la séquence de stop dans la variable stop. 
 
 
 TODO fonction pour le remplissage de seed ( pour l'instant boucle qui parcours la matrice et repertorie les n premier nt + id read associe dans seed & ajout de l'element position dans matrice)
@@ -34,7 +34,7 @@ not used yet
 #### extend(read,seed,matrice,kmer,stop,result):
   boucle for qui parcours chaque nucléotide:(pour decaler de 1 le kmer a tester):
    
-   verifie si les kmer test n'est pas un codon stop : 
+   verifie si les kmer test n'est pas un kmer stop : 
       
       si oui : 
       
@@ -59,11 +59,11 @@ not used yet
 -  variables : 
 
 matrice : tableau contenant  identifiant des read | séquence du read 
-eventuellement une troisieme "colone" avec si il y a un codon start sa position de depart 
+eventuellement une troisieme "colone" avec si il y a un kmer start sa position de depart 
 
-start : séquence codon start
+start : séquence kmer start
 
-stop : sequence codon stop
+stop : sequence kmer stop
 
 kmer :Longueur du kmer seed
 
