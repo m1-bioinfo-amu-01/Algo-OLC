@@ -107,17 +107,17 @@ def extend(read,tab_premiers_kmers,matrice,kmer,stop,result):
 			if essai != read: # on vérifie que essai ne retombe pas sur lui-même
 				print("read ", read, "essai ", essai)
 				
-				# on vérifie si le reste de la partie chevauchante est la même --> 
-				# /!\ MIEUX EXPLIQUER LE IF CI-DESSOUS ! 
+				# on vérifie si le reste de la partie chevauchante est la même 
+				
 				seq_read_to_extend = matrice[read][0][pos_read_matrice:]
 				seq_new_read_to_test =matrice[essai][0][0:len(matrice[read][0][pos_read_matrice:])]
-				if seq_read_to_extend  == seq_new_read_to_test: # on cherche dans matrice de pos_read_matrice(debut de la seq a tester) jusqu'à la fin pour read a étendre VS le nouveau read du debut a la fin de la partie chevauchante
-					# /!\ MIEUX EXPLIQUER LE indice_test 					
-					indice_test=tab_premiers_kmers[test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre dans la liste des 1ers kmer commun
+				if seq_read_to_extend  == seq_new_read_to_test: # on cherche dans matrice de pos_read_matrice (debut de la seq à tester ) jusqu'à la fin pour read a étendre VS le nouveau read du debut à la fin de la partie chevauchante
+										
+					indice_test=tab_premiers_kmers[test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre dans la liste des 1ers kmers communs
 					
 					tab_premiers_kmers[test].pop(indice_test) # on enlève indice_test de tab_premiers_kmer[test] pour ne pas boucler infiniment
 					
-					if len((matrice[essai][0][len(matrice[read][0][pos_read_matrice:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
+					if len((matrice[essai][0][len(matrice[read][0][pos_read_matrice:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0 )
 						
 						result['seq']+=(matrice[essai][0][len(matrice[read][0][pos_read_matrice:]):]) # ajout de la partie non chevauchante dans result['seq']
 						print("seq :",len(result['seq']) ) # affiche la longueur de la séquence pour pouvoir suivre son extension
