@@ -107,11 +107,13 @@ def extend(read,tab_premiers_kmers,matrice,kmer,stop,result):
 			if essai != read: # on vérifie que essai ne retombe pas sur lui-même
 				print("read ", read, "essai ", essai)
 				
-				# on vérifie si le reste de la partie chevauchante est la même --> on cherche dans matrice de pos_read_matrice jusqu'à la fin pour read VS  ?????
+				# on vérifie si le reste de la partie chevauchante est la même --> 
 				# /!\ MIEUX EXPLIQUER LE IF CI-DESSOUS ! 
-				if matrice[read][0][pos_read_matrice:] == matrice[essai][0][0:len(matrice[read][0][pos_read_matrice:])] :
+				seq_read_to_extend = matrice[read][0][pos_read_matrice:]
+				seq_new_read_to_test =matrice[essai][0][0:len(matrice[read][0][pos_read_matrice:])]
+				if seq_read_to_extend  == seq_new_read_to_test: # on cherche dans matrice de pos_read_matrice(debut de la seq a tester) jusqu'à la fin pour read a étendre VS le nouveau read du debut a la fin de la partie chevauchante
 					# /!\ MIEUX EXPLIQUER LE indice_test 					
-					indice_test=tab_premiers_kmers[test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre 
+					indice_test=tab_premiers_kmers[test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre dans la liste des 1ers kmer commun
 					
 					tab_premiers_kmers[test].pop(indice_test) # on enlève indice_test de tab_premiers_kmer[test] pour ne pas boucler infiniment
 					
@@ -133,19 +135,19 @@ start, stop = parser_start_stop('/Users/anissachibani/Desktop/M2/ALG/Projet/data
 kmer=len(start) # taille de notre kmer
 tab_premiers_kmers={} # matrice contant le 1kmer de tout les read de la forme {seq: id reads qui commencent par ça}  /!\ CA ?? 
 
-# /!\ MIEUX EXPLIQUER LA PARTIE EN DESSOUS 
-for read in matrice: # remplissage de tab_premiers_kmers
+ 
+for read in matrice: # remplissage de tab_premiers_kmers boucle for qui parcours l'ensemble des reads
 	premier_kmer= matrice[read][0][0:kmer] # premier_kmer prend le premier kmer dans matrice
-	if premier_kmer not in tab_premiers_kmers and premier_kmer!= '': # vérifie que premier_kmer n'est pas dans tab_premiers_kmers et qu'il n'est pas vide 
-		tab_premiers_kmers[premier_kmer]=[read] #  
-	else:
-		if premier_kmer != '':
-			tab_premiers_kmers[premier_kmer].append(read)
+	if premier_kmer not in tab_premiers_kmers and premier_kmer!= '': # vérifie que premier_kmer n'est pas deja dans tab_premiers_kmers et qu'il n'est pas vide 
+		tab_premiers_kmers[premier_kmer]=[read] # on ajoute l'id de ce read a une liste contenant l'enemble des reads partageant ce premier kmer
+	else: # si il est deja dedans 
+		if premier_kmer != '': # le kmer n'est pas vide 
+			tab_premiers_kmers[premier_kmer].append(read) # on ajoute le read  a la liste  deja existante pour ce kmer
 	try:
 		pos_start = matrice[read][0].find(start) # find(start) cherche s'il y a un start dans les read, et si oui, pos_start prend l'indice du start 
-	except IndexError :
-		pos_start=-1
-	if pos_start != -1:
+	except IndexError : # quand il ne trouve pas de start find renvoi un IndexError
+		pos_start=-1 # on defini alors la valeur de "absence de kmer start dans ce read" comme etant -1
+	if pos_start != -1: 
 		matrice[read].append(pos_start) #si il y a un start, la matrice prend la forme {id read : [sequence , position start]}
 
 
