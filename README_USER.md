@@ -19,7 +19,8 @@ verifiez la presence des fichier :
 ## lancement 
 veuillez executer l'ensemble du code present dans OLC.py 
 --> TODO fonction / option et detail 
-'' ## extention exacte : 
+''
+## extention exacte : 
  veuillez executer :  nom_fonction(arguments)
  
 ## extention avec mismatch : 
