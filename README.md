@@ -1,7 +1,9 @@
 # Algo-OLC
 ## Bienvenue dans le read-me developpeur 
 
-Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads que l'on souhaite étendre et un fichier contenant les codons START et STOP. 
+
+Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads que l'on souhaite étendre et un fichier contenant les codons START et STOP.  
+
 
 Il a pour objectif de trouver dans les reads un codon start à partir duquel il essaye d'étendre une séquence nucléotidique. Pour cela il concatène les reads chevauchants de façon exacte et ce, jusqu'à ce qu'il retourne un codon STOP. 
 
@@ -18,9 +20,10 @@ Il a pour objectif de trouver dans les reads un codon start à partir duquel il 
    
    ex :
    
-   |read3 | [ ATTGG... ] |  --> ici read sans codon start dedans
+   |read3 | [ ATTGG... ] |  --> ici read sans kmer start dedans
    
    
+
    |read4 | [ CGTCA... , 90]| --> ici read avec un codon start commençant au 90 ème nucléotide
    
 
@@ -38,7 +41,7 @@ not used yet
 
   boucle for qui parcours chaque nucléotide:(pour décaler de 1 le kmer a tester):
    
-   verifie si les kmer test n'est pas un codon stop : 
+   verifie si les kmer test n'est pas un kmer stop : 
       
       si oui : 
       
@@ -65,11 +68,11 @@ not used yet
 -  variables : 
 
 matrice : tableau contenant  identifiant des read | séquence du read 
-eventuellement une troisieme "colone" avec si il y a un codon start sa position de depart 
+eventuellement une troisieme "colone" avec si il y a un kmer start sa position de depart 
 
-start : séquence codon start
+start : séquence kmer start
 
-stop : sequence codon stop
+stop : sequence kmer stop
 
 kmer :Longueur du kmer seed
 
