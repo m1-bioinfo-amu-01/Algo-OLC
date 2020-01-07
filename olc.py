@@ -107,7 +107,7 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 	
 		if kmer_test in tab_premiers_kmers:  # compare avec le dicco des premiers kmers des reads
 			
-		for id_read_ in tab_premiers_kmers[kmer_test]: # id_read_for_extend parcours tab_premiers_kmers[test] pour tester tous les reads qui ont le même premier kmer
+		for id_read_for_extend in tab_premiers_kmers[kmer_test]: # id_read_for_extend parcours tab_premiers_kmers[test] pour tester tous les reads qui ont le même premier kmer
 
 			if id_read_for_extend != id_read: # on vérifie que id_read_for_extend ne retombe pas sur lui-même
 				print("read ", id_read, "id_read_for_extend ", id_read_for_extend)
