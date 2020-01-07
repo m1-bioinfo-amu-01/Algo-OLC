@@ -95,7 +95,12 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 		if pos_stop != -1:    # si il y a un kmer stop
 			
 			print("stop")
-			print("result",result)
+			path_actuel = ','.join(result['path']
+			result['path']=[]
+			result['all_path'].append(path_actuel)
+			seq_actuelle = result['seq']
+			result['seq'] = []result['all_seq'].append(seq_actuelle)
+			print("result", result)
 			return result  # fin programme + retourne dictionnaire resultat
 		
 	# si le kmer stop est différent du read à tester (test), alors on regarde si test est dans tab_premiers_kmers (=tableau contenant tous les reads partageant le meme premier kmer)  
@@ -107,6 +112,7 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 			if essai != id_read: # on vérifie que essai ne retombe pas sur lui-même
 				print("read ", id_read, "essai ", essai)
 				
+
 				# on vérifie si le reste de la partie chevauchante est la même --> on cherche dans matrice de pos_read_matrice jusqu'à la fin pour read VS  ?????
 				# /!\ MIEUX EXPLIQUER LE IF CI-DESSOUS ! 
 				if tab_id_seq_pos[id_read][0][pos_read_tab:] == tab_id_seq_pos[essai][0][0:len(tab_id_seq_pos[id_read][0][pos_read_tab:])] :
@@ -114,7 +120,7 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 					indice_test=tab_premiers_kmers[kmer_test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre 
 					
 					tab_premiers_kmers[kmer_test].pop(indice_test) # on enlève indice_test de tab_premiers_kmer[test] pour ne pas boucler infiniment
-					
+
 					if len((tab_id_seq_pos[essai][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
 						
 						result['seq']+=(tab_id_seq_pos[essai][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):]) # ajout de la partie non chevauchante dans result['seq']
@@ -133,6 +139,7 @@ start, stop = parser_start_stop('/Users/anissachibani/Desktop/M2/ALG/Projet/data
 taille_kmer=len(start) # taille de notre kmer
 tab_premiers_kmers={} # matrice contant le 1kmer de tout les read de la forme {seq: id reads qui commencent par ça}  /!\ CA ?? 
 
+
 # /!\ MIEUX EXPLIQUER LA PARTIE EN DESSOUS 
 for id_read in tab_id_seq_pos: # remplissage de tab_premiers_kmers
 	premier_kmer= tab_id_seq_pos[id_read][0][0:taille_kmer] # premier_kmer prend le premier kmer dans matrice
@@ -149,7 +156,8 @@ for id_read in tab_id_seq_pos: # remplissage de tab_premiers_kmers
 		tab_id_seq_pos[id_read].append(pos_start) #si il y a un start, la matrice prend la forme {id read : [sequence , position start]}
 
 
-result = {'path': [], 'seq': ''} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
+result ={'path': [], 'all_path': [],
+          'seq': '', 'all_seq':[]} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
 
 '''code principal : appel des fonction '''
 for i in tab_id_seq_pos:
