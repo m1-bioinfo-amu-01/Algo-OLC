@@ -107,26 +107,26 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 	
 		if kmer_test in tab_premiers_kmers:  # compare avec le dicco des premiers kmers des reads
 			
-		for essai in tab_premiers_kmers[kmer_test]: # essai parcours tab_premiers_kmers[test] pour tester tous les reads qui ont le même premier kmer
+		for id_read_ in tab_premiers_kmers[kmer_test]: # id_read_for_extend parcours tab_premiers_kmers[test] pour tester tous les reads qui ont le même premier kmer
 
-			if essai != id_read: # on vérifie que essai ne retombe pas sur lui-même
-				print("read ", id_read, "essai ", essai)
+			if id_read_for_extend != id_read: # on vérifie que id_read_for_extend ne retombe pas sur lui-même
+				print("read ", id_read, "id_read_for_extend ", id_read_for_extend)
 				
 
 				# on vérifie si le reste de la partie chevauchante est la même --> on cherche dans matrice de pos_read_matrice jusqu'à la fin pour read VS  ?????
 				# /!\ MIEUX EXPLIQUER LE IF CI-DESSOUS ! 
-				if tab_id_seq_pos[id_read][0][pos_read_tab:] == tab_id_seq_pos[essai][0][0:len(tab_id_seq_pos[id_read][0][pos_read_tab:])] :
+				if tab_id_seq_pos[id_read][0][pos_read_tab:] == tab_id_seq_pos[id_read_for_extend][0][0:len(tab_id_seq_pos[id_read][0][pos_read_tab:])] :
 					# /!\ MIEUX EXPLIQUER LE indice_test 					
-					indice_test=tab_premiers_kmers[kmer_test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre 
+					indice_test=tab_premiers_kmers[kmer_test].index(id_read_for_extend) #indice_test récupère l'indice de l'élément utilisé pour étendre 
 					
 					tab_premiers_kmers[kmer_test].pop(indice_test) # on enlève indice_test de tab_premiers_kmer[test] pour ne pas boucler infiniment
 
-					if len((tab_id_seq_pos[essai][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
+					if len((tab_id_seq_pos[id_read_for_extend][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
 						
-						result['seq']+=(tab_id_seq_pos[essai][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):]) # ajout de la partie non chevauchante dans result['seq']
+						result['seq']+=(tab_id_seq_pos[id_read_for_extend][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):]) # ajout de la partie non chevauchante dans result['seq']
 						print("seq :",len(result['seq']) ) # affiche la longueur de la séquence pour pouvoir suivre son extension
 						
-						extend(essai,tab_premiers_kmers,tab_id_seq_pos,taille_kmer,stop,result) # recursion
+						extend(id_read_for_extend,tab_premiers_kmers,tab_id_seq_pos,taille_kmer,stop,result) # recursion
 
 
 '''chargement des données '''
