@@ -64,9 +64,9 @@ def parser_start_stop(nom_fichier):
 ''' fonction  qui permet de determinier si il y a un codon stop dans le read d'interet'''
 # actuellement on ne l'utilise pas encore
 
-def try_stop(matrice,read,stop):
+def try_stop(matrice,id_read,stop):
 	try:
-		pos = matrice[read][0].find(stop)
+		pos = matrice[id_read][0].find(stop)
 	except IndexError :
 		pos = -1 
 	return pos
@@ -77,15 +77,15 @@ def try_stop(matrice,read,stop):
     - si on essaye pas de comparer le read avec lui meme ob regarde si bien pareil sur tout la longeur
     - si oui on relance la fonction avec le nouveau read et on etend la sequence'''
 
-def extend(read,tab_premiers_kmers,matrice,kmer,stop,result):
-	result['path'].append(read) # ajout du read dans le chemin
+def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result):
+	result['path'].append(id_read) # ajout du read dans le chemin
 	
-	for pos_read_matrice in range(0,len(matrice[read][0])-kmer+1): # pos_read_matrice parcours chaque nucléotide des reads dans matrice (cf parserMultiFASTA(nom_fichier))
+	for pos_read_tab in range(0,len(tab_id_seq_pos[id_read][0])-taille_kmer+1): # pos_read_matrice parcours chaque nucléotide des reads dans matrice (cf parserMultiFASTA(nom_fichier))
 		
-		test= matrice[read][0][pos_read_matrice:pos_read_matrice+kmer] # test récupère le premier kmer du read dans matrice = kmer à tester
+		kmer_test= tab_id_seq_pos[id_read][0][pos_read_tab:pos_read_tab+taille_kmer] # test récupère le premier kmer du read dans matrice = kmer à tester
 		
 		try:
-			pos_stop = matrice[read][0].find(stop) # find(stop) cherche s'il y a un stop dans les read, et si oui, pos prend l'indice du stop 
+			pos_stop = tab_id_seq_pos[id_read][0].find(stop) # find(stop) cherche s'il y a un stop dans les read, et si oui, pos prend l'indice du stop 
 			
 		except IndexError :
 			pos_stop = -1  # pas de kmer stop trouvé
@@ -100,60 +100,60 @@ def extend(read,tab_premiers_kmers,matrice,kmer,stop,result):
 		
 	# si le kmer stop est différent du read à tester (test), alors on regarde si test est dans tab_premiers_kmers (=tableau contenant tous les reads partageant le meme premier kmer)  
 	
-		if test in tab_premiers_kmers:  # compare avec le dicco des premiers kmers des reads
+		if kmer_test in tab_premiers_kmers:  # compare avec le dicco des premiers kmers des reads
 			
-		for essai in tab_premiers_kmers[test]: # essai parcours tab_premiers_kmers[test] pour tester tous les reads qui ont le même premier kmer
+		for essai in tab_premiers_kmers[kmer_test]: # essai parcours tab_premiers_kmers[test] pour tester tous les reads qui ont le même premier kmer
 
-			if essai != read: # on vérifie que essai ne retombe pas sur lui-même
-				print("read ", read, "essai ", essai)
+			if essai != id_read: # on vérifie que essai ne retombe pas sur lui-même
+				print("read ", id_read, "essai ", essai)
 				
 				# on vérifie si le reste de la partie chevauchante est la même --> on cherche dans matrice de pos_read_matrice jusqu'à la fin pour read VS  ?????
 				# /!\ MIEUX EXPLIQUER LE IF CI-DESSOUS ! 
-				if matrice[read][0][pos_read_matrice:] == matrice[essai][0][0:len(matrice[read][0][pos_read_matrice:])] :
+				if tab_id_seq_pos[id_read][0][pos_read_tab:] == tab_id_seq_pos[essai][0][0:len(tab_id_seq_pos[id_read][0][pos_read_tab:])] :
 					# /!\ MIEUX EXPLIQUER LE indice_test 					
-					indice_test=tab_premiers_kmers[test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre 
+					indice_test=tab_premiers_kmers[kmer_test].index(essai) #indice_test récupère l'indice de l'élément utilisé pour étendre 
 					
-					tab_premiers_kmers[test].pop(indice_test) # on enlève indice_test de tab_premiers_kmer[test] pour ne pas boucler infiniment
+					tab_premiers_kmers[kmer_test].pop(indice_test) # on enlève indice_test de tab_premiers_kmer[test] pour ne pas boucler infiniment
 					
-					if len((matrice[essai][0][len(matrice[read][0][pos_read_matrice:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
+					if len((tab_id_seq_pos[essai][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):])) !=0: #verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
 						
-						result['seq']+=(matrice[essai][0][len(matrice[read][0][pos_read_matrice:]):]) # ajout de la partie non chevauchante dans result['seq']
+						result['seq']+=(tab_id_seq_pos[essai][0][len(tab_id_seq_pos[id_read][0][pos_read_tab:]):]) # ajout de la partie non chevauchante dans result['seq']
 						print("seq :",len(result['seq']) ) # affiche la longueur de la séquence pour pouvoir suivre son extension
 						
-						extend(essai,tab_premiers_kmers,matrice,kmer,stop,result) # recursion
+						extend(essai,tab_premiers_kmers,tab_id_seq_pos,taille_kmer,stop,result) # recursion
 
 
 '''chargement des données '''
 
-matrice = parserMultiFASTA('/Users/anissachibani/Desktop/M2/ALG/Projet/data/ecoli_2kb_perfect_forward_reads.fasta')
+tab_id_seq_pos = parserMultiFASTA('/Users/anissachibani/Desktop/M2/ALG/Projet/data/ecoli_2kb_perfect_forward_reads.fasta')
 start, stop = parser_start_stop('/Users/anissachibani/Desktop/M2/ALG/Projet/data/start_stop_2kb.fa')
 
 '''def des variables'''
 
-kmer=len(start) # taille de notre kmer
+taille_kmer=len(start) # taille de notre kmer
 tab_premiers_kmers={} # matrice contant le 1kmer de tout les read de la forme {seq: id reads qui commencent par ça}  /!\ CA ?? 
 
 # /!\ MIEUX EXPLIQUER LA PARTIE EN DESSOUS 
-for read in matrice: # remplissage de tab_premiers_kmers
-	premier_kmer= matrice[read][0][0:kmer] # premier_kmer prend le premier kmer dans matrice
+for id_read in tab_id_seq_pos: # remplissage de tab_premiers_kmers
+	premier_kmer= tab_id_seq_pos[id_read][0][0:taille_kmer] # premier_kmer prend le premier kmer dans matrice
 	if premier_kmer not in tab_premiers_kmers and premier_kmer!= '': # vérifie que premier_kmer n'est pas dans tab_premiers_kmers et qu'il n'est pas vide 
-		tab_premiers_kmers[premier_kmer]=[read] #  
+		tab_premiers_kmers[premier_kmer]=[id_read] #  
 	else:
 		if premier_kmer != '':
-			tab_premiers_kmers[premier_kmer].append(read)
+			tab_premiers_kmers[premier_kmer].append(id_read)
 	try:
-		pos_start = matrice[read][0].find(start) # find(start) cherche s'il y a un start dans les read, et si oui, pos_start prend l'indice du start 
+		pos_start = tab_id_seq_pos[id_read][0].find(start) # find(start) cherche s'il y a un start dans les read, et si oui, pos_start prend l'indice du start 
 	except IndexError :
 		pos_start=-1
 	if pos_start != -1:
-		matrice[read].append(pos_start) #si il y a un start, la matrice prend la forme {id read : [sequence , position start]}
+		tab_id_seq_pos[id_read].append(pos_start) #si il y a un start, la matrice prend la forme {id read : [sequence , position start]}
 
 
 result = {'path': [], 'seq': ''} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
 
 '''code principal : appel des fonction '''
-for i in matrice:
-	if len(matrice[i])>1 :
-		pos=matrice[i][1]
-		result['seq']=matrice[i][0][pos:] # initialisation de la séquence avec le premier read de la matrice contenant un start
-		extend(i,tab_premiers_kmers,matrice,kmer,stop,result)
+for i in tab_id_seq_pos:
+	if len(tab_id_seq_pos[i])>1 :
+		pos=tab_id_seq_pos[i][1]
+		result['seq']=tab_id_seq_pos[i][0][pos:] # initialisation de la séquence avec le premier read de la matrice contenant un start
+		extend(i,tab_premiers_kmers,tab_id_seq_pos,taille_kmer,stop,result)
