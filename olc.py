@@ -95,7 +95,12 @@ def extend(read,tab_premiers_kmers,matrice,kmer,stop,result):
 		if pos_stop != -1:    # si il y a un kmer stop
 			
 			print("stop")
-			print("result",result)
+			path_actuel = ','.join(result['path']
+			result['path']=[]
+			result['all_path'].append(path_actuel)
+			seq_actuelle = result['seq']
+			result['seq'] = []result['all_seq'].append(seq_actuelle)
+			print("result", result)
 			return result  # fin programme + retourne dictionnaire resultat
 		
 	# si le kmer stop est différent du read à tester (test), alors on regarde si test est dans tab_premiers_kmers (=tableau contenant tous les reads partageant le meme premier kmer)  
@@ -151,7 +156,8 @@ for read in matrice: # remplissage de tab_premiers_kmers boucle for qui parcours
 		matrice[read].append(pos_start) #si il y a un start, la matrice prend la forme {id read : [sequence , position start]}
 
 
-result = {'path': [], 'seq': ''} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
+result ={'path': [], 'all_path': [],
+          'seq': '', 'all_seq':[]} # creation du dictionnaire qui va nous permettre se stocker le "chemin" d'assemblage, et la séquence étendue
 
 '''code principal : appel des fonction '''
 for i in matrice:
