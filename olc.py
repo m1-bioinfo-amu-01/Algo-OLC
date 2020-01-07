@@ -80,7 +80,8 @@ def try_stop(matrice,id_read,stop):
 def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result):
 	result['path'].append(id_read) # ajout du read dans le chemin
 	
-	for pos_read_tab in range(0,len(tab_id_seq_pos[id_read][0])-taille_kmer+1): # pos_read_matrice parcours chaque nucléotide des reads dans matrice (cf parserMultiFASTA(nom_fichier))
+	 
+	for pos_read_tab in range(0,len(tab_id_seq_pos[id_read][0])-taille_kmer+1): # pos_read_tab parcours chaque nucléotide des reads dans tab_id_seq_pos (cf parserMultiFASTA(nom_fichier))
 		
 		kmer_test= tab_id_seq_pos[id_read][0][pos_read_tab:pos_read_tab+taille_kmer] # test récupère le premier kmer du read dans matrice = kmer à tester
 		
