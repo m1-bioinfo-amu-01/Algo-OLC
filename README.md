@@ -1,11 +1,9 @@
 # Algo-OLC
 ## Bienvenue dans le read-me developpeur 
 
+L'objectif de cet algorithme d'assemblage OLC est de faire du " Gap Filling " : reconstruire toutes les séquences à partir des fichiers d'entrées. Pour ce faire, l'agorithme doi trouver, dans les reads données en entrée,un kmer start à partir duquel il essaye d'étendre une séquence nucléotidique. Il concatène donc les reads chevauchants de façon exacte et ce, jusqu'à ce qu'il retourne un kmer Stop. 
 
-Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads que l'on souhaite étendre et un fichier contenant les codons START et STOP.  
-
-
-Il a pour objectif de trouver dans les reads un codon start à partir duquel il essaye d'étendre une séquence nucléotidique. Pour cela il concatène les reads chevauchants de façon exacte et ce, jusqu'à ce qu'il retourne un codon STOP. 
+Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads type Illumina que l'on souhaite étendre et un fichier contenant les codons Start et Stop.  
 
 ### Structure principale 
 
@@ -15,8 +13,8 @@ Il a pour objectif de trouver dans les reads un codon start à partir duquel il 
 
   #### parserMultiFASTA : 
 
-  cette fonction permet d'ouvrir le fichier FASTA et de récupérer un dictionnaire nommé "matrice" de la forme suivante 
-   | ID read (read+n°)| liste de 1 ou 2 éléments : séquence et éventuellement position du start |
+  Cette fonction permet d'ouvrir le fichier FASTA et de récupérer un dictionnaire nommé "tab_id_seq_pos" de la forme suivante 
+   { identifiant des read : [sequence du read : position kmer start s'il y a ] }
    
    ex :
    
@@ -29,17 +27,23 @@ Il a pour objectif de trouver dans les reads un codon start à partir duquel il 
 
    #### parser_start_stop
 
-   lis le fichier et stock la séquence du codon start dans la variable start et la séquence de stop dans la variable stop. 
+   lis le fichier et stock la séquence du kmer start dans la variable start et la séquence de stop dans la variable stop. 
 
-
-TODO fonction pour le remplissage de seed ( pour l'instant boucle qui parcours la matrice et répertorie les n premier nt + id read associe dans seed & ajout de l'élément position dans matrice). Seed permet de récupérer tous les reads qui partagent le premier kmer. 
 
 #### try_stop(file path):
 not used yet
 
 #### extend(read,seed,matrice,kmer,stop,result):
 
-  boucle for qui parcours chaque nucléotide:(pour décaler de 1 le kmer a tester):
+  Fonction récursive qui va permettre d'étendre les séquences et retourner une matrice resultat contenant : 
+  - le path actuel qui est en train de s'étendre
+  - une liste all_path qui va stocké l'ensemble des chemins trouvés pour les différents start ce qui va permettre de vider à chaque fois la liste "path"
+  - une chaîne de caractère "seq" qui va contenir la séquence étendu du path actuel
+  - une liste all_seq stockant tutes les séquencences des paths trouvés
+  
+  Structure : 
+  
+  boucle for qui parcours l'ensemble des positions de départ possible pour kmer_test. 
    
    verifie si les kmer test n'est pas un kmer stop : 
       
@@ -64,24 +68,35 @@ not used yet
               				recursion 
 
 
+
+TODO fonction pour le remplissage de tab_premiers_kmers ( pour l'instant boucle qui parcours la matrice et répertorie les n premier nt + id read associe dans seed & ajout de l'élément position dans matrice). Seed permet de récupérer tous les reads qui partagent le premier kmer. 
         
 -  variables : 
 
-matrice : tableau contenant  identifiant des read | séquence du read 
-eventuellement une troisieme "colone" avec si il y a un kmer start sa position de depart 
+tab_id_seq_pos : tableau contenant {identifiant des read : [sequence du read : position kmer start s'il y a ] }
 
 start : séquence kmer start
 
+pos_start = position du kmer start
+
 stop : sequence kmer stop
 
-kmer :Longueur du kmer seed
+pos_stop = position du kmer stop
 
-seed : tableau contenant tout les read qui partagent le meme premier kmer
+taille_kmer : longueur du kmer à tester 
 
-result : tableau contenant le chemin (liste des read utilises pour etendre le read de depart )et la séquence concatenee obtenue apres extention
+tab_premiers_kmers : tableau contenant tous les read qui partagent le meme premier kmer
 
-test = read dans matrice que l'on veut tester 
+result : tableau contenant le chemin (liste des read utilisés pour étendre le read de départ) et la séquence concatenée obtenue après extention
 
-essai = read dans seed[test] quand le read test est présent dans seed
+kmer_test = premier kmer du read dans tab_id_seq_pos, c'est le kmer à tester
+
+id_read_for_extend = read utilisé pour l'extension
+
+
+
+
+
+
 
  
