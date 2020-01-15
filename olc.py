@@ -1,5 +1,11 @@
 import sys
 from copy import deepcopy
+import time
+import resource
+
+
+start_time = time.time()
+
 
 sys.setrecursionlimit(50000)  # augmente le maximum de récursion
 
@@ -134,7 +140,7 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
                         seq_extension = rev_comp(tab_id_seq_pos[id_read_for_extend_2][0][len(seq_read_chevauchant):])
                     else:
                         seq_read_extend_chevauchant= tab_id_seq_pos[id_read_for_extend][0][0:len(seq_read_chevauchant)]
-                        seq_extension = tab_id_seq_pos[id_read_for_extend][0][len(seq_read_chevauchant):]
+                        seq_extension = tab_id_seq_pos[id_read_for_extend][0][len(seq_read_extend_chevauchant):]
 
                     # on vérifie si le reste de la partie chevauchante est la même --> on cherche dans matrice de pos_read_matrice jusqu'à la fin pour read VS  ?????
                     if seq_read_chevauchant == seq_read_extend_chevauchant:
@@ -203,9 +209,13 @@ def all_forward_extentions(file_reads, file_start_stop,k):
             result['seq'] = tab_id_seq_pos[i][0][pos:]  # initialisation de la séquence avec le premier read de la
             # matrice contenant un start
             all_result.append(extend(i, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result))
-    for i in all_result: #TODO function ecriture fichier de sortie
-        print('path :', i['all_path'])
-        print('extended sequence : ', i['all_seq'])
+    exit_file = open("result.txt", "w")
+    for i in all_result:
+        if i != None:
+            exit_file.write('path :'+ str(i['all_path'])+'\n')
+            exit_file.write('extended sequence : '+ str(i['all_seq'])+'\n')
+            exit_file.write('\n')
+    exit_file.close()
 
 
 ''' recuperation des arguments passes en ligne de commande dans l'ordre qui suit :
@@ -217,14 +227,20 @@ def all_forward_extentions(file_reads, file_start_stop,k):
 
 path_file_read = sys.argv[1] #TODO warning if name contain spaces + full path
 path_file_start_stop = sys.argv[2]
-kmer_len = int(sys.argv[3])
+
+try:
+    kmer_len = int(sys.argv[3])
+except ValueError:
+    print('WARNING kmer length is not a valid number')
 option = sys.argv[4]
 
 # assemblage parfait dans le sens forward
-if option == '-f' or '--forward' :
+if option == '-p' or option == '--perfect':
     all_forward_extentions(path_file_read,path_file_start_stop,kmer_len)
+else :
+    print('WARNING unknown option')
 
-
-
-'/Users/ninamenet/PycharmProjects/olc/ecoli_2kb_perfect_forward_reads.fasta_2'
-'/Users/ninamenet/PycharmProjects/olc/start_stop_2kb.fa_2'
+'''test temps et memoire'''
+print("--- %s seconds ---" % (time.time() - start_time))
+usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+print("--- %s kilobytes used ---" % usage)
