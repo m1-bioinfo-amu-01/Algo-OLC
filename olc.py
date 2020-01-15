@@ -234,7 +234,7 @@ except ValueError:
     print('WARNING kmer length is not a valid number')
 option = sys.argv[4]
 
-# assemblage parfait dans le sens forward
+# assemblage parfait 
 if option == '-p' or option == '--perfect':
     all_forward_extentions(path_file_read,path_file_start_stop,kmer_len)
 else :
