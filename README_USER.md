@@ -11,29 +11,29 @@ reconstruire une séquence, construite à partir des reads chevauchants, débuta
 
 ## Avant de demarrer
 
-verifiez la presence des fichier :
+Verifiez la presence des fichier :
 - OLC.py
-- un fichier .fasta /.fa contenant les read a assembler 
-- un fichier .fasta /.fa contenant les kmers start puis stop dans cet ordre
+- un fichier .fasta /.fa contenant les reads a assembler 
+- un fichier .fasta /.fa contenant les k-mers start puis stop dans cet ordre
 
-assurez vous de bien avoir les packages time et resource
+Assurez vous de bien avoir les packages time et resource
 
-## lancement 
-dans le terminal veuillez executer la commande comme suit :
+## Lancement 
+Dans le terminal veuillez executer la commande comme suit :
 ```
 python3 olc.py '/Users/ninamenet/PycharmProjects/olc/ecoli_2kb_perfect_forward_reads.fasta' '/Users/ninamenet/PycharmProjects/olc/start_stop_2kb.fa' 31 -p
 ```
-avec en agrgument 1 : le chemin complet du fichier contenant les reads
+Avec en agrgument 1 : le chemin complet du fichier contenant les reads
 
-en argument 2 : le chemin complet du fichier contenant les read start et stop
+En argument 2 : le chemin complet du fichier contenant les reads start et stop
 
-en argument 3 : la taille du kmer que vous souhaitez utiliser pour faire l'extention 
+En argument 3 : la taille du k-mer que vous souhaitez utiliser pour faire l'extension 
 
-en argument 4 : l'option qui peut etre -p ou --perfect pour faire une extention sans mismatch
-
+En argument 4 : l'option qui peut etre -p ou --perfect pour faire une extension sans mismatch
+ 
 ## Sortie
-apres execution le programme affiche dans le terminal un message pour confirmer la bonne execution "code had run without encountering error" , le temps d'execution et la memoire utilisée 
-par ailleur cree localement un fichier texte "resultat.txt" contenant les resultats sous la forme :
+Apres exécution le programme affiche dans le terminal un message pour confirmer la bonne exécution "code had run without encountering error" , le temps d'exécution et la memoire utilisée. 
+Par ailleurs créé localement un fichier texte "resultat.txt" contenant les résultats sous la forme :
 
 path :['read0,read1']
 extended sequence : ['ATCTGAATAACATCCT']
@@ -42,9 +42,9 @@ path :['read1', 'read3']
 extended sequence : ['ATCCT', 'ATCCTACCGTC']
 
 ## Warning
-"WARNING unknown option" 'WARNING kmer length is not a valid number' FileNotFoundError peuvent apparaitre notamment si les chemin contiennent des espaces et sont donnés sans etre entre '' ou si les arguments passé sont invalides.
+"WARNING unknown option" 'WARNING kmer length is not a valid number' FileNotFoundError peuvent apparaitre notamment si les chemins contiennent des espaces et sont donnés sans être entre '' ou si les arguments passés sont invalides.
 
-Attention le fichier fasta contenant le start et stop doit les presenter de facon à ce que le premier kmer soit toujours le start 
+Attention le fichier fasta contenant le start et stop doit les présenter de facon à ce que le premier kmer soit toujours le start 
 
 La taille de kmer doit etre inferieure à la taille des read utilisé
 
