@@ -56,7 +56,8 @@ Retourne la position negative du kmer (-pos) ou None si ce dernier est absent da
   Structure : 
   
 ‘‘‘ python
-  un copie profonde du dictionnaire est utilisée afin de ne pas rendre indisponible certaine donées lors du parcours de l'ensemble des chemins
+
+  une copie profonde du dictionnaire est utilisée afin de ne pas rendre indisponible certaine donées lors du parcours de l'ensemble des chemins
   
  si le read passé en argument contient un codons stop la recursion s'arrete les donées de path et de sequence contenue dans la copie sont alors "sauvegardées" dans le dictionnaire initial sous les clefs: all_path et all_seq
 
