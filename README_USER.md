@@ -2,38 +2,36 @@
 
 ## Objectif :
 
-Cet algorithme d'assemblage de type OLC permet de faire du "Gap Filling".
-Avec en données un jeu de reads de type Illumina et deux k-mers (start et stop), le but est de
-reconstruire une séquence, construite à partir des reads chevauchants, débutant par le k-mer start
- et terminant par le k-mer stop .
+Cet algorithme d'assemblage de type OLC permet de faire du "Gap Filling", avec en données, un jeu de reads de type Illumina et deux k-mers (start et stop). Le but est de reconstruire une séquence, construite à partir de reads chevauchants, débutant par un k-mer start et terminant par un k-mer stop.
  
  ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/OLC%2COverlap-Layout-consensus.png)
 
 ## Avant de démarrer :
 
-Verifiez la presence des fichier :
+Verifiez la presence des fichiers :
 - OLC.py
-- un fichier .fasta /.fa contenant les reads a assembler 
+- un fichier .fasta /.fa contenant les reads à assembler 
 - un fichier .fasta /.fa contenant les k-mers start puis stop dans cet ordre
 
-Assurez vous de bien avoir les packages time et resource
+Assurez-vous de bien avoir les packages "time" et "ressource"
 
 ## Lancement :
-Dans le terminal veuillez executer la commande comme suit :
+Dans le terminal veuillez exécuter la commande comme suit :
 ```
 python3 olc.py '/Users/ninamenet/PycharmProjects/olc/ecoli_2kb_perfect_forward_reads.fasta' '/Users/ninamenet/PycharmProjects/olc/start_stop_2kb.fa' 31 -p
 ```
-Avec en agrgument 1 : le chemin complet du fichier contenant les reads
+Avec en argument 1 : le chemin complet du fichier contenant les reads
 
-En argument 2 : le chemin complet du fichier contenant les reads start et stop
+En argument 2 : le chemin complet du fichier contenant les k-mers start et stop
 
 En argument 3 : la taille du k-mer que vous souhaitez utiliser pour faire l'extension 
 
-En argument 4 : l'option qui peut etre -p ou --perfect pour faire une extension sans mismatch
+En argument 4 : l'option qui peut être soit -p ou --perfect pour faire une extension sans mismatch
  
 ## Sortie :
-Apres exécution le programme affiche dans le terminal un message pour confirmer la bonne exécution "code had run without encountering error" , le temps d'exécution et la memoire utilisée. 
-Par ailleurs créé localement un fichier texte "resultat.txt" contenant les résultats sous la forme :
+
+Apres l'exécution le programme affiche dans le terminal un message pour confirmer la bonne exécution : "code had run without encountering error", avec le temps d'exécution et la mémoire utilisée. 
+Par ailleurs, cela a également créér localement un fichier texte "resultat.txt" contenant les résultats sous la forme :
 
 path :['read0,read1']
 extended sequence : ['ATCTGAATAACATCCT']
@@ -42,38 +40,43 @@ path :['read1', 'read3']
 extended sequence : ['ATCCT', 'ATCCTACCGTC']
 
 ## Warning :
-"WARNING unknown option" 'WARNING kmer length is not a valid number' FileNotFoundError peuvent apparaitre notamment si les chemins contiennent des espaces et sont donnés sans être entre '' ou si les arguments passés sont invalides.
+Les messages "WARNING unknown option" "WARNING kmer length is not a valid number" "FileNotFoundError" peuvent apparaître notamment si les chemins contiennent des espaces et sont donnés sans être entre guillemets, ou si les arguments passés sont invalides.
 
-Attention le fichier fasta contenant le start et stop doit les présenter de facon à ce que le premier k-mer soit toujours le start 
+Attention, pour le fichier fasta contenant le start et stop, le premier kmer doit être le start, et le second sera le stop et non l'inverse. 
 
-La taille de k-mer doit être inferieure à la taille des reads utilisés.
+La taille du k-mer doit être inférieure à la taille des reads utilisée.
 
 # Résultats :
 
 ## Temps de calculs et mémoire :
-Nous avons testé les programmes sur 2 jeux de données disponible dans le dossier data_alg.
-Un jeu de donnée de 2kb et un de 100kb dont voici un graphique présentant l'évolution des temps utilisés et de la mémoire en fonction de la taille de k-mer utilisé pour réaliser l'assemblage.
+
+Nous avons testé les programmes sur 2 jeux de données disponibles dans le dossier data_alg.
+
+Un jeu de donnée de 2kb et un de 100kb dont voici les graphiques représentant l'évolution des temps utilisés et de la mémoire en fonction de la taille de k-mer utilisée pour réaliser l'assemblage.
 
 Gaphique pour le jeu de donnée de 2Kb:
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/2kb.png)
 
 Gaphique pour le jeu de donnée de 100Kb:
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/100kb.png)
-Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulève une des limites les plus importantes de notre programme.
 
-Nous avons été jusque 150 dans nos test si l'exécution est plus rapide cela s'explique parce qu'il s'agit de la taille des reads donc aucune extension ne peut être faite.
 
-Comme l'on peut le voir ici que le compromis idéal entre temps et mémoire est aux alentours de 20-30 nt 
-Sachant que nos reads ont une longeur de 150 nt on estime qu'un bon point de départ semble être aux alentours de 20% de la taille de k-mer cependant il est important de prendre en compte la complexitées des données entrées. Il est recommandé sur des données biologique d'utiliser des nombres impairs afin d'éviter les palindromes qui peuvent être fréquents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
+Pour le jeu de données de 100kb, nous n'avons pas pu effectué les tests de mémoire et de temps avec des tailles de kmer supérieure à 70 nucléotides, pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulève l'une des limites les plus importantes de notre programme.
+
+Nous remarquons dans le jeu de données de 2kb, avec une taille de kmer de 150 nucléotides, que le temps d'exécution est beaucoup plus rapide et que celà prends moins d'espace. Ceci peut s'expliquer à cause de la taille importante du kmer, qui ne permet que très peu voire aucune extension, donc la fin du programme est vite atteinte. 
+
+Comme l'on peut le voir ici, le compromis idéal entre le temps et la mémoire est aux alentours de 20-30 nucléotides. 
+Sachant que nos reads ont une longeur de 150 nucléotides, on estime qu'un bon point de départ semble être aux alentours de 20% de la taille de k-mer. 
+Cependant, il est important de prendre en compte la complexité des données d'entrées. En effet, il est recommandé, sur des données biologiques, d'utiliser des nombres impairs afin d'éviter les palindromes qui peuvent être fréquents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
 
 ## Qualité :
-Pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemins possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'expliquent par le fait que la séquence ne s'arrête pas pile après le codon stop.
+Pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemins possibles, ce qui est relativement proche de ce qui est attendu (10001). Les 12 nucléotides de différences s'expliquent par le fait que la séquence ne s'arrête pas pile après le kmer stop.
 
-Pour le fichier 2kb nous trouvons une séquence étendue de 1065 nucléotides ce qui est très proche de ce qui est attendu (1065).
+Pour le fichier 2kb, nous trouvons une séquence étendue de 1065 nucléotides, ce qui correspond au résultat attendu (1065).
 
 On peut conclure que notre outil réalise un alignement de qualité.
 
-Cependant les différents chemins produisent la même séquence ce qui nous a fait douter de la véracité de la séquence cepandant sur un toy exemple nous avons bien observé le comportement attendu. Ci-dessous :
+Cependant, les différents chemins produisent la même séquence, ce qui nous a fait douter de la véracité de la séquence. Par contre, sur un toy exemple nous avons bien observé le comportement attendu. Ci-dessous :
 
 path :['read0,read1']
 extended sequence : ['ATCTGAATAACATCCT']
@@ -81,14 +84,15 @@ extended sequence : ['ATCTGAATAACATCCT']
 path :['read1', 'read3']
 extended sequence : ['ATCCT', 'ATCCTACCGTC']
 
-Nous n'avons pas eu assez de temps pour vérififer manuellement tout les assemblages mais vu que cela fonctionne sur les toy example nous estimons que cela devrait en théorie être correct.
+Nous n'avons pas eu assez de temps pour vérifier manuellement tous les assemblages mais étant donné que cela fonctionne sur les toy examples, nous estimons que cela devrait en théorie être correct.
 
 ## Discussion :
 
-Nos temps de calculs et la mémoire utilisée restent relativement elevée ce qui rend sont application a de grands jeux de données non envisageable.
+Nos temps de calculs ainsi la mémoire utilisée restent relativement élevée, ce qui rend son application à de grands jeux de données non envisageable.
+
 Cela est dû entre autre à notre utilisation de multiple deep-copy lors de notre récursion et de l'état encore un peu "brut" de notre code qui pourrait encore être bien plus optimisé.
 
-De plus nous avons décider de conserver et d'afficher les chemins utilisés pour l'assembage même si cela n'est pas forcement indispensable il nous semblait intéressant dans la mesure où nous avons realisé l'extention à partir de tout les starts possible pour pouvoir les diferenncier mais également car cela nous a beaucoup aidé à voir nos erreurs lorsque nous codions. 
+De plus, nous avons décidé de conserver et d'afficher les chemins utilisés pour l'assembage, même si cela n'est pas indispensable. Il nous semblait intéressant, dans la mesure où nous avons realisé l'extension à partir de tous les starts possibles, de les garder afin de pouvoir les différencier, mais cela nous a également servi pour voir nos erreurs au moment de la programmation.
 
-Notre code ne réalise pour l'instant que l'extension pour des matchs parfaits nous avons manqués de temps pour realiser une option qui permettrait de faire l'extension avec des mismatch. Cependant nous y avions reflechis et nous avions prévu de faire cela avec un score seuil d'erreur en dessous duquel la comparaison de la séquence chevauchante serait considérée comme valable et continuerait la récursion.
+Notre code ne réalise pour l'instant que l'extension pour des matchs parfaits. Nous avons manqué de temps pour réaliser une option qui permettrait de faire l'extension avec des mismatch. Cependant nous y avions réfléchis et nous avions prévus de faire cela avec un score seuil d'erreur, en dessous duquel la comparaison de la séquence chevauchante serait considérée comme valable et continuerait la récursion.
 
