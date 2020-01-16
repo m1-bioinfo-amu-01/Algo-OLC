@@ -31,8 +31,8 @@ En argument 4 : l'option qui peut être soit -p ou --perfect pour faire une exte
  
 ## Sortie :
 
-Apres l'exécution, le programme affiche dans le terminal un message pour confirmer la bonne exécution : "code had run without encountering error", avec le temps d'exécution et la mémoire utilisée. 
-Par ailleurs, cela a également créér localement un fichier texte "resultat.txt" contenant les résultats sous la forme :
+Apres l'exécution, le programme affiche dans le terminal un message pour confirmer que le programme s'est exécutée correctement : "code had run without encountering error", avec le temps d'exécution et la mémoire utilisée. 
+Par ailleurs, cela a également créé localement un fichier texte "resultat.txt" contenant les résultats sous la forme :
 
 path :['read0,read1']
 extended sequence : ['ATCTGAATAACATCCT']
@@ -63,9 +63,11 @@ Gaphique pour le jeu de donnée de 100Kb:
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/100kb.png)
 
 
-Pour le jeu de données de 100kb, nous n'avons pas pu effectué les tests de mémoire et de temps avec une taille de k-mer supérieure à 70 nucléotides, pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui est une des limites les plus importantes de notre programme.Nous avons egalement fait tourner avec le jeu de donné de 5000kb nous avons obtenu un resultat pour un kmer de taille 31 :1524.0472841262817 secondes et 809066496 kilobytes ce qui nous a disuader de tenter ce graphique avec ce jeu de donné.
+Pour le jeu de données de 100kb, nous n'avons pas pu effectué les tests de mémoire et de temps avec une taille de k-mer supérieure à 70 nucléotides, pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui est une des limites les plus importantes de notre programme.
 
-Nous remarquons dans le jeu de données de 2kb, avec une taille de k-mer de 150 nucléotides, que le temps d'exécution est beaucoup plus rapide et que cela prend moins d'espace. Ceci peut s'expliquer du fait de la taille importante du k-mer, qui ne permet que très peu voire aucune extension, donc la fin du programme est vite atteinte. 
+Nous avons également fait tourner le programme avec le jeu de donné de 5000kb, nous avons obtenu un résultat pour un kmer de taille 31 : 1524.0472841262817 secondes et 809066496 kilobytes ce qui nous a dissuadé de tenter ce graphique avec ce jeu de donnée.
+
+Nous remarquons dans le jeu de données de 2kb, avec une taille de k-mer de 150 nucléotides, que le temps d'exécution est beaucoup plus rapide et que cela prend moins d'espace. Ceci peut s'expliquer du fait de la taille importante du k-mer, qui ne permet que très peu, voire aucune extension, donc la fin du programme est vite atteinte. 
 
 Comme l'on peut le voir ici, le compromis idéal entre le temps et la mémoire est aux alentours de 20 nucléotides. 
 Sachant que nos reads ont une longueur de 150 nucléotides, on estime qu'une bonne taille de k-mer correspond à 15% de la longueur des reads utilisés.
@@ -74,7 +76,7 @@ Cependant, il est important de prendre en compte la complexité des données d'e
 
 ## Qualité :
 
-Pour le fichier de 100 kb, nous trouvons un alignement de taille 10013 et 10 chemins possibles, ce qui est relativement proche de ce qui est attendu (10001). Les 12 nucléotides de différences s'expliquent par le fait que l'alignement ne s'arrête directement au dernier nucléotide du kmer stop, mais continue jusqu'à la fin du read contenant ce même k-mer.
+Pour le fichier de 100 kb, nous trouvons un alignement de taille 10013 et 10 chemins possibles, ce qui est relativement proche de ce qui est attendu (10001). Les 12 nucléotides de différences s'expliquent par le fait que l'alignement ne s'arrête pas directement au dernier nucléotide du kmer stop, mais continue jusqu'à la fin du read contenant ce même kmer.
 
 Pour le fichier 2kb, nous trouvons une séquence étendue de 1065 nucléotides, ce qui correspond au résultat attendu (1065).
 
