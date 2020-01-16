@@ -32,73 +32,79 @@ Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads type
 
 #### parser_start_stop
 
-   lis le fichier et stock la séquence du kmer start dans la variable start et la séquence de stop dans la variable stop. 
+   lis le fichier et stocke la séquence du kmer start dans la variable start et la séquence de stop dans la variable stop. 
    
 #### rev_comp(sequence):
-renvoie le reverse complement de la séquence nucléotidique passée en argument.
+
+   renvoie le reverse complément de la séquence nucléotidique passée en argument.
 
 
 #### try_stop_start(matrice,id_read,kmer_to_find):
 
-cette fonction permet de chercher un kmer donné que ce soit dans un read forward ou dans son reverse complement. Retourne la position du kmer ou -1 si ce dernier est absent dans un read forward. 
-Retourne la position negative du kmer (-pos) ou None si ce dernier est absent dans un read reverse complement.
+   Cette fonction permet de chercher un kmer donné, que ce soit dans un read forward ou dans son reverse complement.
+   Il retourne la position du kmer ou -1 si ce dernier est absent dans un read forward. 
+   Il retourne la position negative du kmer (-pos) ou None si ce dernier est absent dans un read reverse complement.
 
-
-
-#### extend(read,seed,matrice,kmer,stop,result):
+#### extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result):
 
   Fonction récursive qui va permettre d'étendre les séquences et retourner une matrice resultat contenant : 
   - le path actuel qui est en train de s'étendre
-  - une liste all_path qui va stocké l'ensemble des chemins trouvés pour les différents start ce qui va permettre de vider à chaque fois la liste "path"
-  - une chaîne de caractère "seq" qui va contenir la séquence étendu du path actuel
+  - une liste all_path qui va stocker l'ensemble des chemins trouvés pour les différents start ce qui va permettre de vider à chaque fois la liste "path"
+  - une chaîne de caractère "seq" qui va contenir la séquence étendue du path actuel
   - une liste all_seq stockant toutes les séquencences des paths trouvés
   
   Structure : 
   
 ```
 
-  une copie profonde du dictionnaire est utilisée afin de ne pas rendre indisponible certaine donées lors du parcours de l'ensemble des chemins
+Une copie profonde du dictionnaire est utilisée afin de ne pas rendre indisponible certaines données lors du parcours de l'ensemble des chemins.
   
- si le read passé en argument contient un codons stop la recursion s'arrete les donées de path et de sequence contenue dans la copie sont alors "sauvegardées" dans le dictionnaire initial sous les clefs: all_path et all_seq
+Si le read passé en argument contient un kmer stop la récursion s'arrête. Les données de path et de sequence contenues dans la copie sont alors "sauvegardées" dans le dictionnaire initial sous les clefs : all_path et all_seq
 
-sinon :
-  boucle for qui parcours l'ensemble des positions de départ possible pour notre kmer a tester :
-    verifie si l'id du read est en forward ou en reverse :
-      si en reverse il faut rev-comp(seq du read)
+Sinon :
+  Boucle for qui parcours l'ensemble des positions de départ possible pour notre kmer à tester :
+  
+     Vérifie si l'id du read est en reverse :
+     
+          Si c'est le cas, le kmer_test sera en reverse, en utilisant cette commande : rev-comp(seq du read)
+          Sinon, le kmer_test utilisé sera bien un forward
       
-      	regarde si le test dans le tableau seed (liste des 1 kmer):
+     On regarde si le kmer test est dans le tableau tab_premiers_kmers:
         
-        pour chaque element test que ce n'est pas déjà lui même :
+          Si oui, on vérifie que le read que l'on souhaite étendre n'est pas égal à lui-même:
           
-         		 test si le reste de la partie chevauchante et aussi égale: 
-            
-            			si oui on enlève cette référence de seed pour éviter une boucle infinie 
-            
-            			test le read permet bien d'etendre la séquence: 
+         	    S'il est différent de lui-même, on définit les séquences pour les chevauchements et extensions en fonction de   s'ils sont des reverse ou pas.  
               
-             				ajout de la partie non chevauchante dans la séquence etendue 
-              
-              				recursion 
+              On test si le reste de la partie chevauchante est aussi égale: 
+            
+            	      Si oui, on vérifie que la séquence s'est bien étendue en vérifiant sa longueur :
+            
+            			        Si oui, on ajoute la partie non chevauchante dans la séquence etendue 
+                          Appel de la fonction extend grâce à la récursion   
+
 ```
 
 #### fill_tab_premier_kmers(matrice_all_reads,taille_kmer,start):
-fonction qui permet de creer un dictionnaire contenant toutes les séquences les premier kmer associé au id read ou -id read si c'est le debut du reverse complement 
-de la forme : {sequenceA: id_read1, -id_read5, sequenceB: id_read2 ... }
+
+Fonction qui permet de créer un dictionnaire tab_premiers_kmer contenant toutes les séquences des premiers kmer associés au "id read",si la séquence est en forward, ou "-id read" si c'est le début d'un reverse complément.
+tab_premiers_kmer est de la forme : {sequenceA: id_read1, -id_read5, sequenceB: id_read2 ... }
 
 #### all_extentions (path_for_all_read, path_file_start_stop,length_kmer):
-fonction qui permet de realiser l'extension parfaite et de creer un fichier texte contenant les resultats obtenus
+
+Fonction qui permet de realiser l'extension parfaite et de créer un fichier texte contenant les resultats obtenus.
+
 ```
-chargement des données des fichier dans les variables
+Chargement des données des fichier dans les variables
 
-boucle qui parcours tous les reads: 
-  si il contiennent un codon start:
-  initialisation de la recursion 
-  resulat de la recursion ajouté a une liste all_result
+Boucle qui parcours tous les reads: 
+      Si le read contient un kmer start:
+            Initialisation de la récursion pour recommencer à partir de ce start
+            Résulat de la recursion est ajouté à une liste all_result
 
-creation et ecriture du fichier de sortie 
-  chemin 
-  sequence etendue
-fermeture du fichier
+Création et écriture du fichier de sortie contenant : 
+      - chemin 
+      - séquence étendue
+Fermeture du fichier
 
 ```
         
@@ -110,7 +116,7 @@ start : séquence du kmer start
 
 pos_start = position du kmer start
 
-stop : sequence kmer stop
+stop : séquence du kmer stop
 
 pos_stop = position du kmer stop
 
@@ -122,15 +128,15 @@ result : tableau contenant le chemin (liste des read utilisés pour étendre le 
 
 kmer_test = premier kmer du read dans tab_id_seq_pos, c'est le kmer à tester
 
-id_read_for_extend = read utilisé pour l'extension
+id_read_for_extend = id du read utilisé pour l'extension
 
-path_file_read : deuxieme argument passé en ligne de commande (premier apres le nom du fichier) lors de l'execution c'est le chemin complet sans espaces du fichier contenant l'ensemble des reads
+path_file_read : deuxième argument passé en ligne de commande (premier après le nom du fichier) lors de l'execution. Il correspond au chemin complet, sans espaces, du fichier contenant l'ensemble des reads
 
-path_file_start_stop: troisieme argument passé en ligne de commande  lors de l'execution c'est le chemin complet sans espaces du fichier contenant les read start et stop
+path_file_start_stop: troisième argument passé en ligne de commande  lors de l'execution. Il correspond au chemin complet,sans espaces, du fichier contenant les reads start et stop
 
-kmer_len : quatrieme argument passé en ligne de commande  lors de l'execution c'est la taille des kmer a utiliser pour l'extension
+kmer_len : quatrième argument passé en ligne de commande lors de l'execution. Il correspond à la taille des kmer à utiliser pour l'extension
 
-option : cinquieme argument passé en ligne de commande  lors de l'execution c'est l'option choisie pour l'extention a realiser peut etre -p ou --perfect (TODO -m ou --mismatch)
+option : cinquième argument passé en ligne de commande lors de l'execution. Il correspond à l'option choisie pour l'extention à realiser: peut être -p ou --perfect (TODO -m ou --mismatch)
 
 
 
