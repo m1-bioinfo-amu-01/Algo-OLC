@@ -57,7 +57,7 @@ comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au
 nous avons été jusque 150 dans nos test si c'est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite 
 ![Image description](link-to-image)
 
-nous n'avons pas pu realiser exactement les meme test que pour le fichier precedant pour des raison de temps/memoire/performances de nos ordinateur
+nous n'avons pas pu realiser exactement les meme test que pour le fichier precedant pour des raison de temps/memoire/performances de nos ordinateur ce qui souleve une des limites les plus important de notre programmes
 
 ## qualité
 pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemin possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'explique par le fait que la séquence ne s'arrete pas pile apres le codon stop 
