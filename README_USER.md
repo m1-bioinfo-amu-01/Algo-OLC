@@ -43,68 +43,25 @@ extended sequence : ['ATCCT', 'ATCCTACCGTC']
 
 Attention le fichier fasta contenant le start et stop doit les presenter de facon à ce que le premier kmer soit toujours le start 
 
+La taille de kmer doit etre inferieure à la taille des read utilisé
+
 # resultats
 
-## temps de calculs
+## temps de calculs et memoire
+nous avons tester les programme sur 2 jeu de données disponible dans le dossier data_alg 
+un jeu de donnée de 2kb et un de 100kb dont voici un graph presentant l'evolution des temps utilisé et de la memoire en fonction de la taille de kmer utilisé pour realiser l'assemblage 
+![Image description](link-to-image)
 
-
-
-
-
-
-<!--table
-	{mso-displayed-decimal-separator:"\,";
-	mso-displayed-thousand-separator:" ";}
-@page
-	{margin:.75in .7in .75in .7in;
-	mso-header-margin:.3in;
-	mso-footer-margin:.3in;}
-tr
-	{mso-height-source:auto;}
-col
-	{mso-width-source:auto;}
-br
-	{mso-data-placement:same-cell;}
-td
-	{padding-top:1px;
-	padding-right:1px;
-	padding-left:1px;
-	mso-ignore:padding;
-	color:black;
-	font-size:12.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:Calibri, sans-serif;
-	mso-font-charset:0;
-	mso-number-format:General;
-	text-align:general;
-	vertical-align:bottom;
-	border:none;
-	mso-background-source:auto;
-	mso-pattern:auto;
-	mso-protection:locked visible;
-	white-space:nowrap;
-	mso-rotate:0;}
--->
-
-
-
-
-
-
- 
- 
-
-  
-
- 
-
-
-
-## utilisation memoire 
+comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au alentour de 20-30 nt 
+--> psq c'est de la taille du start/stop ?? 
+nous avons été jusque 150 dans nos test si c'est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite 
+![Image description](link-to-image)
 
 ## qualité
 
-## conclusion
+## disscusion 
+nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données inenvisable.
+Cela est du entre autre de notre utilisation de multiple deep-copy lors de notre recursion et de l'etat encore un peu "brut" de notre code qui pourrait encore etre bien plus optimisé. deplus nous avons decider de conserver et d'afficher les chemin utilisé pour l'assembage meme si cela n'est pas forcement indispensable il nous semblais interessant la mesure ou nous avons realiser l'extention a partir de tout les starts possible pour pouvoir les diferenncier mais egalement car cela nous a beaucoup aider a voir nos erreurs lorsque nous codions. 
+
+
 
