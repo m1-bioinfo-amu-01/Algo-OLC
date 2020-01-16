@@ -81,7 +81,26 @@ sinon :
               				recursion 
 ```
 
-TODO fonction pour le remplissage de tab_premiers_kmers ( pour l'instant boucle qui parcours la matrice et répertorie les n premier nt + id read associe dans seed & ajout de l'élément position dans matrice). Seed permet de récupérer tous les reads qui partagent le premier kmer. 
+#### fill_tab_premier_kmers(matrice_all_reads,taille_kmer,start):
+fonction qui permet de creer un dictionnaire contenant toutes les séquences les premier kmer associé au id read ou -id read si c'est le debut du reverse complement 
+de la forme : {sequenceA: id_read1, -id_read5, sequenceB: id_read2 ... }
+
+#### all_extentions (path_for_all_read, path_file_start_stop,length_kmer):
+fonction qui permet de realiser l'extension parfaite et de creer un fichier texte contenant les resultats obtenus
+```
+chargement des données des fichier dans les variables
+
+boucle qui parcours tous les reads: 
+  si il contiennent un codon start:
+  initialisation de la recursion 
+  resulat de la recursion ajouté a une liste all_result
+
+creation et ecriture du fichier de sortie 
+  chemin 
+  sequence etendue
+fermeture du fichier
+
+```
         
 -  variables : 
 
