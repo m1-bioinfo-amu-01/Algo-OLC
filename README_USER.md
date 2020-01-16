@@ -53,9 +53,11 @@ La taille de k-mer doit être inferieure à la taille des reads utilisés.
 ## Temps de calculs et mémoire :
 Nous avons testé les programmes sur 2 jeux de données disponible dans le dossier data_alg.
 Un jeu de donnée de 2kb et un de 100kb dont voici un graphique présentant l'évolution des temps utilisés et de la mémoire en fonction de la taille de k-mer utilisé pour réaliser l'assemblage.
+
+Gaphique pour le jeu de donnée de 2Kb:
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/2kb.png)
 
-
+Gaphique pour le jeu de donnée de 100Kb:
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/100kb.png)
 Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulève une des limites les plus importantes de notre programme.
 
