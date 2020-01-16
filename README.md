@@ -14,7 +14,7 @@ Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads type
   - time 
   - resource
 
-###- fonctions:
+### - fonctions:
 
 #### parserMultiFASTA : 
 
