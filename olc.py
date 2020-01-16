@@ -4,7 +4,7 @@ import time
 import resource
 
 
-start_time = time.time()
+start_time = time.time() #initialisation du calcul du temps ecoulé
 
 sys.setrecursionlimit(50000)  # augmente le maximum de récursion
 
@@ -71,10 +71,9 @@ def rev_comp(sequence):
             reverse += dico[nt]
     return reverse
 
-''' fonction  qui permet de determinier si il y a un codon stop dans le read d'interet'''
-
-
-# actuellement on ne l'utilise pas encore
+''' fonction qui permet de determiner si le codon d'interet est present dans le read dont l'identifiant est passé en argument
+si cet id commence par - c'est que qu'il faut regarder dans le reverse complément. Pour les id forward si il est present pos = nombre positif  et si il est absent -1
+dans les read reverse pos = nombre negatif si present et None si absent'''
 
 def try_stop_start(matrice, id_read, kmer_to_find):
     if id_read.startswith('-'):
@@ -104,8 +103,8 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
     res_copy = deepcopy(result)
     res_copy['path'].append(id_read)  # ajout du read dans le chemin dans la copie profonde
     pos_stop = try_stop_start(tab_id_seq_pos,id_read,stop)  # on commence tout d'abord par vérifier s'il y a un stop pour pouvoir terminer le programme
-    if pos_stop != -1:  # si il y a un kmer stop
-        path_actuel = ','.join(res_copy['path'])
+    if pos_stop != -1:  # si il y a un kmer stop le path et la séquence contenu dans la copie est alors basculée dans le vrai dictionnaire resultat
+        path_actuel = ','.join(res_copy['path']) 
         result['all_path'].append(path_actuel)
         seq_actuelle = ''.join(res_copy['seq'])
         result['all_seq'].append(seq_actuelle)
@@ -113,12 +112,11 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 
     for pos_read_tab in range(0, len(tab_id_seq_pos[id_read][0]) - taille_kmer + 1):  # pos_read_tab parcours chaque
         # nucléotide des reads dans tab_id_seq_pos (cf parserMultiFASTA(nom_fichier))
-        if id_read.startswith('-'):
-            id_read_2 = id_read[1:]
-            kmer_test = rev_comp(tab_id_seq_pos[id_read_2][0][pos_read_tab:pos_read_tab + taille_kmer])
+        if id_read.startswith('-'): # si le read est dans le sens reverse
+            id_read_2 = id_read[1:] # les reverse ne sont pas stocker directement il faut recuperer l'id forward pour avoir la sequence forward
+            kmer_test = rev_comp(tab_id_seq_pos[id_read_2][0][pos_read_tab:pos_read_tab + taille_kmer]) # ici on rev complemente le kmer de la seq forward
         else:
-            kmer_test = tab_id_seq_pos[id_read][0][pos_read_tab:pos_read_tab + taille_kmer]  # test récupère le premier kmer
-        # du read dans matrice = kmer à tester
+            kmer_test = tab_id_seq_pos[id_read][0][pos_read_tab:pos_read_tab + taille_kmer]  # test récupère le premier km du read dans matrice = kmer à tester
 
         if kmer_test in tab_premiers_kmers:  # compare avec le dicco des premiers kmers des reads
 
@@ -126,26 +124,26 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
 
                 if id_read_for_extend != id_read and id_read_for_extend not in res_copy['path'] and id_read_for_extend not in result['all_path']:  # on vérifie que id_read_for_extend ne retombe pas sur lui-même
 
-                    if id_read.startswith('-'):
+                    if id_read.startswith('-'): # si reverse complement on adapte chaque séquence en recuperant le forward et en le reverse complementant
                         seq_read_chevauchant = rev_comp(tab_id_seq_pos[id_read][0][pos_read_tab:])
                     else:
-                        seq_read_chevauchant = tab_id_seq_pos[id_read][0][pos_read_tab:]
+                        seq_read_chevauchant = tab_id_seq_pos[id_read][0][pos_read_tab:] # partie chevauchante dans le read que l'on veut etendre
 
                     if id_read_for_extend.startswith('-'):
                         id_read_for_extend_2 =id_read_for_extend[1:]
                         seq_read_extend_chevauchant = rev_comp(tab_id_seq_pos[id_read_for_extend_2][0][0:len(seq_read_chevauchant)])
                         seq_extension = rev_comp(tab_id_seq_pos[id_read_for_extend_2][0][len(seq_read_chevauchant):])
                     else:
-                        seq_read_extend_chevauchant= tab_id_seq_pos[id_read_for_extend][0][0:len(seq_read_chevauchant)]
-                        seq_extension = tab_id_seq_pos[id_read_for_extend][0][len(seq_read_extend_chevauchant):]
+                        seq_read_extend_chevauchant= tab_id_seq_pos[id_read_for_extend][0][0:len(seq_read_chevauchant)] # partie chevauchante dans le read qui pourrais faire l'extention
+                        seq_extension = tab_id_seq_pos[id_read_for_extend][0][len(seq_read_extend_chevauchant):]# extention = partie non chevauchante du read utilisé pour l'extention
 
-                    # on vérifie si le reste de la partie chevauchante est la même --> on cherche dans matrice de pos_read_matrice jusqu'à la fin pour read VS  ?????
+                    # on vérifie si le reste de la partie chevauchante est la même
                     if seq_read_chevauchant == seq_read_extend_chevauchant:
 
                         if len(seq_extension) != 0:  # verifie que l'extention apportée par le read apporte bien de nouveaux nucléotides ( extention supérieure à 0)
                             res_copy['seq'] += seq_extension  # ajout de la partie non chevauchante dans result['seq']
                             res_tmp = extend(id_read_for_extend, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop,res_copy)  # recursion
-                            if res_tmp != None:
+                            if res_tmp in not None:
                                 return res_tmp
     return None
 
@@ -164,18 +162,18 @@ def fill_tab_premier_kmers(tab_id_seq,taille_kmer,start):
         rev_premier_kmer= rev_comp(premier_kmer)
         rev_id_read ='-'+id_read
         if  premier_kmer not in tab_premiers_kmers and premier_kmer != '':  # vérifie que premier_kmer n'est pas dans tab_premiers_kmers et qu'il n'est pas vide
-            tab_premiers_kmers[premier_kmer] = [id_read]  #
+            tab_premiers_kmers[premier_kmer] = [id_read]
         else:
             if premier_kmer != '':
                 tab_premiers_kmers[premier_kmer].append(id_read)
-        if rev_premier_kmer not in tab_premiers_kmers and rev_premier_kmer != '':  # vérifie que premier_kmer n'est pas dans tab_premiers_kmers et qu'il n'est pas vide
+        if rev_premier_kmer not in tab_premiers_kmers and rev_premier_kmer != '':  # vérifie que le premier_kmer du reverse complement n'est pas dans tab_premiers_kmers et qu'il n'est pas vide
             tab_premiers_kmers[rev_premier_kmer] = ['-' + id_read]  #
         else:
             if premier_kmer != '':
                 tab_premiers_kmers[rev_premier_kmer].append('-'+id_read)
-
+       #on profite du parcours de l'ensemble de tab_id_seq pour chercher dans les read la presence du kmer start dans le sens forward et reverse
         pos_start = try_stop_start(tab_id_seq, id_read, start)
-        if pos_start != -1:
+        if pos_start != -1 :
             tab_id_seq[id_read].append(pos_start)
         rev_pos_start = try_stop_start(tab_id_seq, rev_id_read, start)
         if rev_pos_start is not None:
@@ -185,9 +183,8 @@ def fill_tab_premier_kmers(tab_id_seq,taille_kmer,start):
 ''' fonction qui permet de realiser l'extention forward sans mismatch et d'ecrire un fichier texte " result.txt"
 en sortie contenant les path et les sequences obtenues '''
 
-
 def all_extentions(file_reads, file_start_stop,k):
-    # chargement des donnees
+    # chargement des donnees des fichiers /arguments en ligne de commande
     tab_id_seq_pos = parserMultiFASTA(file_reads)
     start, stop = parser_start_stop(file_start_stop)
     taille_kmer = k  # taille du kmer utilise pour l'assemblage
@@ -206,7 +203,7 @@ def all_extentions(file_reads, file_start_stop,k):
             result['seq'] = tab_id_seq_pos[i][0][pos:]  # initialisation de la séquence avec le premier read de la
             # matrice contenant un start
             all_result.append(extend(i, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result))
-
+    #ecriture du fichier de sortie contenant les resultats
     exit_file = open("result.txt", "w")
     for i in all_result:
         if i != None:
