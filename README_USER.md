@@ -1,15 +1,15 @@
 # Bienvenue dans le readme utilisateur 
 
-## objectif 
+## Objectif 
 
 Cet algorithme d'assemblage de type OLC permet de faire du "Gap Filling".
-Avec en donnés un jeu de reads de type Illumina et deux -mers (start et stop) , le but est de
-reconstruire une séquence, construite à partir des reads chevauchants, débutant par le kmer start
- et terminant par le kmer stop .
+Avec en données un jeu de reads de type Illumina et deux k-mers (start et stop), le but est de
+reconstruire une séquence, construite à partir des reads chevauchants, débutant par le k-mer start
+ et terminant par le k-mer stop .
  
  ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/OLC%2COverlap-Layout-consensus.png)
 
-## avant de demarrer
+## Avant de demarrer
 
 verifiez la presence des fichier :
 - OLC.py
@@ -55,12 +55,14 @@ nous avons tester les programme sur 2 jeu de données disponible dans le dossier
 un jeu de donnée de 2kb et un de 100kb dont voici un graph presentant l'evolution des temps utilisé et de la memoire en fonction de la taille de kmer utilisé pour realiser l'assemblage 
 ![Image description](link-to-image)
 
-comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au alentour de 20-30 nt 
---> psq c'est de la taille du start/stop ?? 
-nous avons été jusque 150 dans nos test si c'est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite 
-![Image description](link-to-image)
 
-nous n'avons pas pu realiser exactement les meme test que pour le fichier precedant pour des raison de temps/memoire/performances de nos ordinateur ce qui souleve une des limites les plus important de notre programmes
+![Image description](link-to-image)
+Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulèvent une des limites les plus importantes de notre programme
+
+Nous avons été jusque 150 dans nos test si c'est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite 
+
+comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au alentour de 20-30 nt 
+sachant que nos read on une longeur de 150 nt on estime qu'un bon point de depart semble etre au alentours de 20% de la taille de kmer cependant il est important de prendre en compte la complexitées des données entrée. Il est recommandé sur des données biologique d'utiliser des nombres impair afin d'eviter les palindromes qui peuvent etre frequents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
 
 ## qualité
 pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemin possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'explique par le fait que la séquence ne s'arrete pas pile apres le codon stop 
@@ -69,14 +71,22 @@ pour le fichier 2kb nous trouvons une séquence etendue de 1065 nucléotides ce 
 
 on peut conclure que notre outil realise un alignement de qualité
 
+cependant les différent chemin produisent la meme sequence se qui nous a fait douter de la veracité de la séquence cepandant sur un toy exemple nous avons bien observé le comportement attendu. Ci-dessous :
+
+path :['read0,read1']
+extended sequence : ['ATCTGAATAACATCCT']
+
+path :['read1', 'read3']
+extended sequence : ['ATCCT', 'ATCCTACCGTC']
+
+nous n'avons pas eu le temps suffisant pour verififer manuellement tout les assemblages mais vu que cela fonctionne sur les toy example nous estimons que cela devrait en théorie etre correct.
+
 ## disscusion 
-nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données non envisable.
+
+Nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données non envisable.
 Cela est du entre autre de notre utilisation de multiple deep-copy lors de notre recursion et de l'etat encore un peu "brut" de notre code qui pourrait encore etre bien plus optimisé.
 
-Deplus nous avons decider de conserver et d'afficher les chemin utilisé pour l'assembage meme si cela n'est pas forcement indispensable il nous semblais interessant la mesure ou nous avons realiser l'extention a partir de tout les starts possible pour pouvoir les diferenncier mais egalement car cela nous a beaucoup aider a voir nos erreurs lorsque nous codions. 
+De plus nous avons decider de conserver et d'afficher les chemin utilisé pour l'assembage meme si cela n'est pas forcement indispensable il nous semblais interessant la mesure ou nous avons realiser l'extention a partir de tout les starts possible pour pouvoir les diferenncier mais egalement car cela nous a beaucoup aider a voir nos erreurs lorsque nous codions. 
 
 notre code ne realise pour l'instant malheureusement seulement l'extension pour des match parfaits nous avons manqué de temps pour realiser une option qui permettrait de faire l'extention avec des mismatch. Cependant nous y avions reflechis et nous avions prevu de faire cela avec une score seuil d'erreur en dessous du quel la comparaison de la sequence chevauchante serait considérée comme valable et continuerait la recursion.
-
-
-
 
