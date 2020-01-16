@@ -23,9 +23,12 @@ dans le terminal veuillez executer la commande comme suit :
 ```
 python3 olc.py '/Users/ninamenet/PycharmProjects/olc/ecoli_2kb_perfect_forward_reads.fasta' '/Users/ninamenet/PycharmProjects/olc/start_stop_2kb.fa' 31 -p
 ```
-avec en agrgument 1 : le chemin complet du fichier contenant les reads 
+avec en agrgument 1 : le chemin complet du fichier contenant les reads
+
 en argument 2 : le chemin complet du fichier contenant les read start et stop
+
 en argument 3 : la taille du kmer que vous souhaitez utiliser pour faire l'extention 
+
 en argument 4 : l'option qui peut etre -p ou --perfect pour faire une extention sans mismatch
 
 ## Sortie
