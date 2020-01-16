@@ -6,15 +6,15 @@ L'objectif de cet algorithme d'assemblage OLC est de faire du " Gap Filling " : 
 
 Ce programme nécessite 2 fichiers fasta en entrée : 1 contenant les reads type Illumina que l'on souhaite étendre et un fichier contenant les codons Start et Stop.  
 
-### Structure principale 
+## Structure principale 
 
-- import des modules nécessaires: 
+### - import des modules nécessaires: 
   - sys 
   - copy
   - time 
   - resource
 
-- fonctions:
+###- fonctions:
 
 #### parserMultiFASTA : 
 
@@ -102,11 +102,11 @@ fermeture du fichier
 
 ```
         
--  variables : 
+### -  variables : 
 
-tab_id_seq_pos : tableau contenant {identifiant des read : [sequence du read : position kmer start s'il y a ] }
+tab_id_seq_pos : dictionnaire contenant {identifiant des read : [sequence du read : position kmer start s'il y a ] }
 
-start : séquence kmer start
+start : séquence du kmer start
 
 pos_start = position du kmer start
 
@@ -116,13 +116,21 @@ pos_stop = position du kmer stop
 
 taille_kmer : longueur du kmer à tester 
 
-tab_premiers_kmers : tableau contenant tous les read qui partagent le meme premier kmer
+tab_premiers_kmers : dictionnaire contenant tous les read qui partagent le meme premier kmer {sequence : id des read}
 
 result : tableau contenant le chemin (liste des read utilisés pour étendre le read de départ) et la séquence concatenée obtenue après extention
 
 kmer_test = premier kmer du read dans tab_id_seq_pos, c'est le kmer à tester
 
 id_read_for_extend = read utilisé pour l'extension
+
+path_file_read : deuxieme argument passé en ligne de commande (premier apres le nom du fichier) lors de l'execution c'est le chemin complet sans espaces du fichier contenant l'ensemble des reads
+
+path_file_start_stop: troisieme argument passé en ligne de commande  lors de l'execution c'est le chemin complet sans espaces du fichier contenant les read start et stop
+
+kmer_len : quatrieme argument passé en ligne de commande  lors de l'execution c'est la taille des kmer a utiliser pour l'extension
+
+option : cinquieme argument passé en ligne de commande  lors de l'execution c'est l'option choisie pour l'extention a realiser peut etre -p ou --perfect (TODO -m ou --mismatch)
 
 
 
