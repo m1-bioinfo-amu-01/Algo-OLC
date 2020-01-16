@@ -44,34 +44,34 @@ extended sequence : ['ATCCT', 'ATCCTACCGTC']
 ## Warning
 "WARNING unknown option" 'WARNING kmer length is not a valid number' FileNotFoundError peuvent apparaitre notamment si les chemins contiennent des espaces et sont donnés sans être entre '' ou si les arguments passés sont invalides.
 
-Attention le fichier fasta contenant le start et stop doit les présenter de facon à ce que le premier kmer soit toujours le start 
+Attention le fichier fasta contenant le start et stop doit les présenter de facon à ce que le premier k-mer soit toujours le start 
 
-La taille de kmer doit etre inferieure à la taille des read utilisé
+La taille de k-mer doit être inferieure à la taille des reads utilisés.
 
-# resultats
+# Resultats
 
-## temps de calculs et memoire
-nous avons tester les programme sur 2 jeu de données disponible dans le dossier data_alg 
-un jeu de donnée de 2kb et un de 100kb dont voici un graph presentant l'evolution des temps utilisé et de la memoire en fonction de la taille de kmer utilisé pour realiser l'assemblage 
+## Temps de calculs et mémoire
+Nous avons testé les programmes sur 2 jeux de données disponible dans le dossier data_alg.
+Un jeu de donnée de 2kb et un de 100kb dont voici un graphique présentant l'évolution des temps utilisés et de la mémoire en fonction de la taille de k-mer utilisé pour réaliser l'assemblage.
 ![Image description](link-to-image)
 
 
 ![Image description](link-to-image)
-Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulèvent une des limites les plus importantes de notre programme
+Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulève une des limites les plus importantes de notre programme.
 
-Nous avons été jusque 150 dans nos test si l'execution est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite.
+Nous avons été jusque 150 dans nos test si l'exécution est plus rapide cela s'explique parce qu'il s'agit de la taille des reads donc aucune extension ne peut être faite.
 
-Comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au alentour de 20-30 nt 
-Sachant que nos read on une longeur de 150 nt on estime qu'un bon point de depart semble etre au alentours de 20% de la taille de kmer cependant il est important de prendre en compte la complexitées des données entrée. Il est recommandé sur des données biologique d'utiliser des nombres impair afin d'eviter les palindromes qui peuvent etre frequents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
+Comme l'on peut le voir ici que le compromis idéal entre temps et mémoire est aux alentours de 20-30 nt 
+Sachant que nos reads ont une longeur de 150 nt on estime qu'un bon point de départ semble être aux alentours de 20% de la taille de k-mer cependant il est important de prendre en compte la complexitées des données entrées. Il est recommandé sur des données biologique d'utiliser des nombres impairs afin d'éviter les palindromes qui peuvent être fréquents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
 
-## qualité
-pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemin possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'explique par le fait que la séquence ne s'arrete pas pile apres le codon stop 
+## Qualité
+Pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemins possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'expliquent par le fait que la séquence ne s'arrête pas pile après le codon stop.
 
-pour le fichier 2kb nous trouvons une séquence etendue de 1065 nucléotides ce qui est tres proche de ce qui est attendu (1065).
+Pour le fichier 2kb nous trouvons une séquence étendue de 1065 nucléotides ce qui est très proche de ce qui est attendu (1065).
 
-on peut conclure que notre outil realise un alignement de qualité
+On peut conclure que notre outil réalise un alignement de qualité.
 
-cependant les différent chemin produisent la meme sequence se qui nous a fait douter de la veracité de la séquence cepandant sur un toy exemple nous avons bien observé le comportement attendu. Ci-dessous :
+Cependant les différents chemins produisent la même séquence ce qui nous a fait douter de la véracité de la séquence cepandant sur un toy exemple nous avons bien observé le comportement attendu. Ci-dessous :
 
 path :['read0,read1']
 extended sequence : ['ATCTGAATAACATCCT']
@@ -79,14 +79,14 @@ extended sequence : ['ATCTGAATAACATCCT']
 path :['read1', 'read3']
 extended sequence : ['ATCCT', 'ATCCTACCGTC']
 
-nous n'avons pas eu le temps suffisant pour verififer manuellement tout les assemblages mais vu que cela fonctionne sur les toy example nous estimons que cela devrait en théorie etre correct.
+Nous n'avons pas eu assez de temps pour vérififer manuellement tout les assemblages mais vu que cela fonctionne sur les toy example nous estimons que cela devrait en théorie être correct.
 
-## disscusion 
+## Disscusion 
 
-Nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données non envisable.
-Cela est du entre autre de notre utilisation de multiple deep-copy lors de notre recursion et de l'etat encore un peu "brut" de notre code qui pourrait encore etre bien plus optimisé.
+Nos temps de calculs et la mémoire utilisée restent relativement elevée ce qui rend sont application a de grands jeux de données non envisageable.
+Cela est dû entre autre à notre utilisation de multiple deep-copy lors de notre récursion et de l'état encore un peu "brut" de notre code qui pourrait encore être bien plus optimisé.
 
-De plus nous avons decider de conserver et d'afficher les chemin utilisé pour l'assembage meme si cela n'est pas forcement indispensable il nous semblais interessant la mesure ou nous avons realiser l'extention a partir de tout les starts possible pour pouvoir les diferenncier mais egalement car cela nous a beaucoup aider a voir nos erreurs lorsque nous codions. 
+De plus nous avons décider de conserver et d'afficher les chemins utilisés pour l'assembage même si cela n'est pas forcement indispensable il nous semblait intéressant dans la mesure où nous avons realisé l'extention à partir de tout les starts possible pour pouvoir les diferenncier mais également car cela nous a beaucoup aidé à voir nos erreurs lorsque nous codions. 
 
-notre code ne realise pour l'instant malheureusement seulement l'extension pour des match parfaits nous avons manqué de temps pour realiser une option qui permettrait de faire l'extention avec des mismatch. Cependant nous y avions reflechis et nous avions prevu de faire cela avec une score seuil d'erreur en dessous du quel la comparaison de la sequence chevauchante serait considérée comme valable et continuerait la recursion.
+Notre code ne réalise pour l'instant que l'extension pour des matchs parfaits nous avons manqués de temps pour realiser une option qui permettrait de faire l'extension avec des mismatch. Cependant nous y avions reflechis et nous avions prévu de faire cela avec un score seuil d'erreur en dessous duquel la comparaison de la séquence chevauchante serait considérée comme valable et continuerait la récursion.
 
