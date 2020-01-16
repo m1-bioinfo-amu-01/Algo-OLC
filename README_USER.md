@@ -60,8 +60,13 @@ nous avons été jusque 150 dans nos test si c'est plus rapide cela s'explique c
 ## qualité
 
 ## disscusion 
-nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données inenvisable.
-Cela est du entre autre de notre utilisation de multiple deep-copy lors de notre recursion et de l'etat encore un peu "brut" de notre code qui pourrait encore etre bien plus optimisé. deplus nous avons decider de conserver et d'afficher les chemin utilisé pour l'assembage meme si cela n'est pas forcement indispensable il nous semblais interessant la mesure ou nous avons realiser l'extention a partir de tout les starts possible pour pouvoir les diferenncier mais egalement car cela nous a beaucoup aider a voir nos erreurs lorsque nous codions. 
+nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données non envisable.
+Cela est du entre autre de notre utilisation de multiple deep-copy lors de notre recursion et de l'etat encore un peu "brut" de notre code qui pourrait encore etre bien plus optimisé.
+
+Deplus nous avons decider de conserver et d'afficher les chemin utilisé pour l'assembage meme si cela n'est pas forcement indispensable il nous semblais interessant la mesure ou nous avons realiser l'extention a partir de tout les starts possible pour pouvoir les diferenncier mais egalement car cela nous a beaucoup aider a voir nos erreurs lorsque nous codions. 
+
+notre code ne realise pour l'instant malheureusement seulement l'extension pour des match parfaits nous avons manqué de temps pour realiser une option qui permettrait de faire l'extention avec des mismatch. Cependant nous y avions reflechis et nous avions prevu de faire cela avec une score seuil d'erreur en dessous du quel la comparaison de la sequence chevauchante serait considérée comme valable et continuerait la recursion.
+
 
 
 
