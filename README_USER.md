@@ -4,6 +4,7 @@
 
 Cet algorithme d'assemblage de type OLC permet de faire du "Gap Filling", avec en données, un jeu de reads de type Illumina et deux k-mers (start et stop). Le but est de reconstruire une séquence, construite à partir de reads chevauchants, débutant par un k-mer start et terminant par un k-mer stop.
  
+ Voici ci dessous un graphe qui represente l'assemblage de type olc et que nous avons essayé de reprosuire dans cet outil
  ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/OLC%2COverlap-Layout-consensus.png)
 
 ## Avant de démarrer :
@@ -73,7 +74,7 @@ Cependant, il est important de prendre en compte la complexité des données d'e
 
 ## Qualité :
 
-Pour le fichier de 100 kb, nous trouvons un alignement de taille 10013 et 10 chemins possibles, ce qui est relativement proche de ce qui est attendu (10001). Les 12 nucléotides de différences s'expliquent par le fait que la séquence ne s'arrête pas pile après le kmer stop.
+Pour le fichier de 100 kb, nous trouvons un alignement de taille 10013 et 10 chemins possibles, ce qui est relativement proche de ce qui est attendu (10001). Les 12 nucléotides de différences s'expliquent par le fait que l'alignement ne s'arrête directement au dernier nucléotide du kmer stop, mais continue jusqu'à la fin du read contenant ce même k-mer.
 
 Pour le fichier 2kb, nous trouvons une séquence étendue de 1065 nucléotides, ce qui correspond au résultat attendu (1065).
 
