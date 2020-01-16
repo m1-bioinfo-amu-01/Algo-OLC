@@ -62,7 +62,9 @@ nous n'avons pas pu realiser exactement les meme test que pour le fichier preced
 ## qualité
 pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemin possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'explique par le fait que la séquence ne s'arrete pas pile apres le codon stop 
 
-pour le fichier 2kb 
+pour le fichier 2kb nous trouvons une séquence etendue de 1065 nucléotides ce qui est tres proche de ce qui est attendu (1065).
+
+on peut conclure que notre outil realise un alignement de qualité
 
 ## disscusion 
 nos temps de calculs et la memoire utilisée restent relativement elevé ce qui rend sont application a de grand jeu de données non envisable.
