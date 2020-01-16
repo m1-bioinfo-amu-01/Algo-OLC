@@ -6,7 +6,6 @@ import resource
 
 start_time = time.time()
 
-
 sys.setrecursionlimit(50000)  # augmente le maximum de récursion
 
 ''' cette fonction permet d'ouvrir le fichier fasta et de recuperer un dictionnaire de la forme :
@@ -102,11 +101,8 @@ def try_stop_start(matrice, id_read, kmer_to_find):
 
 
 def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result):
-    if id_read.startswith('-'):
-        id_read_2 = id_read[1:]
     res_copy = deepcopy(result)
     res_copy['path'].append(id_read)  # ajout du read dans le chemin dans la copie profonde
-
     pos_stop = try_stop_start(tab_id_seq_pos,id_read,stop)  # on commence tout d'abord par vérifier s'il y a un stop pour pouvoir terminer le programme
     if pos_stop != -1:  # si il y a un kmer stop
         path_actuel = ','.join(res_copy['path'])
@@ -118,7 +114,8 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
     for pos_read_tab in range(0, len(tab_id_seq_pos[id_read][0]) - taille_kmer + 1):  # pos_read_tab parcours chaque
         # nucléotide des reads dans tab_id_seq_pos (cf parserMultiFASTA(nom_fichier))
         if id_read.startswith('-'):
-            kmer_test = rev_comp(tab_id_seq_pos[id_read][0][pos_read_tab:pos_read_tab + taille_kmer])
+            id_read_2 = id_read[1:]
+            kmer_test = rev_comp(tab_id_seq_pos[id_read_2][0][pos_read_tab:pos_read_tab + taille_kmer])
         else:
             kmer_test = tab_id_seq_pos[id_read][0][pos_read_tab:pos_read_tab + taille_kmer]  # test récupère le premier kmer
         # du read dans matrice = kmer à tester
@@ -152,15 +149,13 @@ def extend(id_read, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, resul
                                 return res_tmp
     return None
 
-
-
 '''defninition de la fonction qui permet de remplir une matrice qui contient tout les premier kmer de chaque read
   de la forme {seq: id reads qui commencent par cette sequence} 
   de plus elle permet egalement de chercher dans chaque read la presence d'un codon start si presnt 
   ajoute sa position a la matrice contenant tout les read : 
   { id reads : sequence, position du start} 
 '''
-def fill_tab_premier_kmers(tab_id_seq,taille_kmer, tab_id_seq_pos,start):
+def fill_tab_premier_kmers(tab_id_seq,taille_kmer,start):
 
     tab_premiers_kmers = {}  # matrice contant le 1kmer de tout les read
 # permet de parcourir les reads et de stocker le premier kmer dans un dictionnaire
@@ -179,24 +174,26 @@ def fill_tab_premier_kmers(tab_id_seq,taille_kmer, tab_id_seq_pos,start):
             if premier_kmer != '':
                 tab_premiers_kmers[rev_premier_kmer].append('-'+id_read)
 
-        pos_start = try_stop_start(tab_id_seq_pos, id_read, start)
+        pos_start = try_stop_start(tab_id_seq, id_read, start)
         if pos_start != -1:
-            tab_id_seq_pos[id_read].append(pos_start)
-        rev_pos_start = try_stop_start(tab_id_seq_pos, rev_id_read, start)
-        if rev_pos_start != None:
-            tab_id_seq_pos[id_read].append(rev_pos_start)
+            tab_id_seq[id_read].append(pos_start)
+        rev_pos_start = try_stop_start(tab_id_seq, rev_id_read, start)
+        if rev_pos_start is not None:
+            tab_id_seq[id_read].append(rev_pos_start)
     return tab_premiers_kmers
 
-''' fonction qui permet de realiser l'extention forward sans mismatch '''
+''' fonction qui permet de realiser l'extention forward sans mismatch et d'ecrire un fichier texte " result.txt"
+en sortie contenant les path et les sequences obtenues '''
 
-def all_forward_extentions(file_reads, file_start_stop,k):
+
+def all_extentions(file_reads, file_start_stop,k):
     # chargement des donnees
     tab_id_seq_pos = parserMultiFASTA(file_reads)
     start, stop = parser_start_stop(file_start_stop)
     taille_kmer = k  # taille du kmer utilise pour l'assemblage
 
-    #creation de la table contenant les premiers kmer
-    tab_premiers_kmers = fill_tab_premier_kmers(tab_id_seq_pos,taille_kmer,tab_id_seq_pos,start)
+    # creation de la table contenant les premiers kmer
+    tab_premiers_kmers = fill_tab_premier_kmers(tab_id_seq_pos,taille_kmer,start)
 
     # creation du dictionnaire qui va nous permettre se stocker les chemin utilise pour l'assemblage
     # et les séquence étendue pour chaque read
@@ -209,6 +206,7 @@ def all_forward_extentions(file_reads, file_start_stop,k):
             result['seq'] = tab_id_seq_pos[i][0][pos:]  # initialisation de la séquence avec le premier read de la
             # matrice contenant un start
             all_result.append(extend(i, tab_premiers_kmers, tab_id_seq_pos, taille_kmer, stop, result))
+
     exit_file = open("result.txt", "w")
     for i in all_result:
         if i != None:
@@ -223,9 +221,9 @@ def all_forward_extentions(file_reads, file_start_stop,k):
 - chemin complet du fichier fasta contenant les start et stop
 - taille des kmers pour l'assemblage 
 - option pour l'option a utiliser pour l'assemblage qui doit être parmis les suivantes : 
-        -f , --forward ''' # TODO ajouter l'option pour mismatch
+        -p , --perfect ''' # TODO ajouter l'option pour mismatch
 
-path_file_read = sys.argv[1] #TODO warning if name contain spaces + full path
+path_file_read = sys.argv[1] # TODO warning if name contain spaces + full path
 path_file_start_stop = sys.argv[2]
 
 try:
@@ -234,11 +232,12 @@ except ValueError:
     print('WARNING kmer length is not a valid number')
 option = sys.argv[4]
 
-# assemblage parfait 
+# assemblage parfait dans le sens forward
 if option == '-p' or option == '--perfect':
-    all_forward_extentions(path_file_read,path_file_start_stop,kmer_len)
+    all_extentions(path_file_read,path_file_start_stop,kmer_len)
 else :
     print('WARNING unknown option')
+
 
 '''test temps et memoire'''
 print("--- %s seconds ---" % (time.time() - start_time))
