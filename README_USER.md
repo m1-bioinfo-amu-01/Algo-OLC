@@ -59,10 +59,10 @@ un jeu de donnée de 2kb et un de 100kb dont voici un graph presentant l'evoluti
 ![Image description](link-to-image)
 Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulèvent une des limites les plus importantes de notre programme
 
-Nous avons été jusque 150 dans nos test si c'est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite 
+Nous avons été jusque 150 dans nos test si l'execution est plus rapide cela s'explique car il s'agit de la taille des reads donc aucune extention ne peut etre faite.
 
-comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au alentour de 20-30 nt 
-sachant que nos read on une longeur de 150 nt on estime qu'un bon point de depart semble etre au alentours de 20% de la taille de kmer cependant il est important de prendre en compte la complexitées des données entrée. Il est recommandé sur des données biologique d'utiliser des nombres impair afin d'eviter les palindromes qui peuvent etre frequents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
+Comme l'on peut le voir ici que le compromis ideal entre temps et memoire est au alentour de 20-30 nt 
+Sachant que nos read on une longeur de 150 nt on estime qu'un bon point de depart semble etre au alentours de 20% de la taille de kmer cependant il est important de prendre en compte la complexitées des données entrée. Il est recommandé sur des données biologique d'utiliser des nombres impair afin d'eviter les palindromes qui peuvent etre frequents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
 
 ## qualité
 pour le fichier 100 kb nous trouvons un alignement de taille 10013 et 10 chemin possibles ce qui est relativement proche de ce qui est attendu (10001) les 12 nucléotides de différences s'explique par le fait que la séquence ne s'arrete pas pile apres le codon stop 
