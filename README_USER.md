@@ -7,7 +7,7 @@ Avec en donnés un jeu de reads de type Illumina et deux -mers (start et stop) ,
 reconstruire une séquence, construite à partir des reads chevauchants, débutant par le kmer start
  et terminant par le kmer stop .
  
- ![Image description](Algo-OLC/OLC,Overlap-Layout-consensus.png)
+ ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/OLC%2COverlap-Layout-consensus.png)
 
 ## avant de demarrer
 
