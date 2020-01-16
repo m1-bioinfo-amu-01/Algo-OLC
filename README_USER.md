@@ -63,12 +63,12 @@ Gaphique pour le jeu de donnée de 100Kb:
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/100kb.png)
 
 
-Pour le jeu de données de 100kb, nous n'avons pas pu effectué les tests de mémoire et de temps avec une taille de k-mer supérieure à 70 nucléotides, pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui est une des limites les plus importantes de notre programme.
+Pour le jeu de données de 100kb, nous n'avons pas pu effectué les tests de mémoire et de temps avec une taille de k-mer supérieure à 70 nucléotides, pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui est une des limites les plus importantes de notre programme.Nous avons egalement fait tourner avec le jeu de donné de 5000kb nous avons obtenu un resultat pour un kmer de taille 31 :1524.0472841262817 secondes et 809066496 kilobytes ce qui nous a disuader de tenter ce graphique avec ce jeu de donné.
 
 Nous remarquons dans le jeu de données de 2kb, avec une taille de k-mer de 150 nucléotides, que le temps d'exécution est beaucoup plus rapide et que cela prend moins d'espace. Ceci peut s'expliquer du fait de la taille importante du k-mer, qui ne permet que très peu voire aucune extension, donc la fin du programme est vite atteinte. 
 
-Comme l'on peut le voir ici, le compromis idéal entre le temps et la mémoire est aux alentours de 20-30 nucléotides. 
-Sachant que nos reads ont une longueur de 150 nucléotides, on estime qu'une bonne taille de k-mer correspond à 20% de la longueur des reads utilisés.
+Comme l'on peut le voir ici, le compromis idéal entre le temps et la mémoire est aux alentours de 20 nucléotides. 
+Sachant que nos reads ont une longueur de 150 nucléotides, on estime qu'une bonne taille de k-mer correspond à 15% de la longueur des reads utilisés.
 
 Cependant, il est important de prendre en compte la complexité des données d'entrées. En effet, il est recommandé, sur des données biologiques, d'utiliser des nombres impairs afin d'éviter les palindromes qui peuvent être fréquents. Ici nous ne l'avons pas fait car ce sont des données artificielles et que la différence n'était pas significative.
 
