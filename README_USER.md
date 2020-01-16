@@ -56,7 +56,7 @@ Un jeu de donnée de 2kb et un de 100kb dont voici un graphique présentant l'é
 ![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/2kb.png)
 
 
-![Image description](link-to-image)
+![Image description](https://github.com/m1-bioinfo-amu-01/Algo-OLC/blob/master/100kb.png)
 Nous n'avons pas pu réaliser exactement les mêmes tests que pour le fichier précédent pour des raisons de temps, de mémoire et de performance de nos ordinateurs. Ce qui soulève une des limites les plus importantes de notre programme.
 
 Nous avons été jusque 150 dans nos test si l'exécution est plus rapide cela s'explique parce qu'il s'agit de la taille des reads donc aucune extension ne peut être faite.
