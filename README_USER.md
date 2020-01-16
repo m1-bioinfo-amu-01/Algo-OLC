@@ -44,7 +44,7 @@ extended sequence : ['ATCCT', 'ATCCTACCGTC']
 
 Les messages "WARNING unknown option" "WARNING kmer length is not a valid number" "FileNotFoundError" peuvent apparaître notamment si les chemins contiennent des espaces et sont donnés sans être entre guillemets, ou si les arguments passés sont invalides.
 
-Attention, pour le fichier fasta contenant le start et stop, le premier k-mer doit être le start, et le second sera le stop et non l'inverse. 
+Attention, pour le fichier fasta contenant le start et stop, le premier k-mer doit être le stop, et le second sera le start et non l'inverse. 
 
 La taille du k-mer doit être inférieure à la taille des reads utilisée.
 
